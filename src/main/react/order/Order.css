@@ -169,60 +169,6 @@ tr:nth-child(0){
 }
 
 
-.top-nav {
-    border-bottom: 1px solid #ddd;
-    background-color: #f3f3f3;
-    height: 80px;
-
-
-}
-
-
-.user-profile {
-    margin-top: 10px;
-    float: right;
-    width: 300px;
-    height: 100%;
-
-}
-
-
-.user-profile-box {
-    display: flex;
-
-    align-items: center
-}
-
-.user-profile-button{
-    padding: 10px 16px;
-    border: 1px solid #004e90;
-    background-color: #004e90;
-    color: white;
-    font-size: 16px;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.user-profile-info {
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.user-profile-img{
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    margin-right: 15px;
-}
-
-
-
-
 .filter-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.tobe.mapper.EmployeeMapper">
+    <select id="getAllList" resultType="Employee">
+        select * from employee
+    </select>
+
+    <select id="getPickList" resultType="Employee">
+        SELECT *
+        FROM employee
+<!--        WHERE employee_id LIKE CONCAT('%', #{employeeId}, '%')-->
+        <where>
+            <if test="employeeId != '' and employeeId != null">
+                AND employee_id LIKE CONCAT('%', #{employeeId}, '%')
+            </if>
+            <if test="employeeName != '' and employeeName != null">
+                AND employee_name LIKE CONCAT('%', #{employeeName}, '%')
+            </if>
+            <if test="employeeTel != '' and employeeTel != null">
+                AND employee_tel LIKE CONCAT('%', #{employeeTel}, '%')
+            </if>
+            <if test="employeeEmail != '' and employeeEmail != null">
+                AND employee_email LIKE CONCAT('%', #{employeeEmail}, '%')
+            </if>
+            <if test="employeeAddr != '' and employeeAddr != null">
+                AND employee_addr LIKE CONCAT('%', #{employeeAddr}, '%')
+            </if>
+            <if test="hireDate != '' and hireDate != null">
+                AND hire_date LIKE CONCAT('%', #{hireDate}, '%')
+            </if>
+            <if test="employeeManagerId != '' and employeeManagerId != null">
+                AND employee_manager_id LIKE CONCAT('%', #{employeeManagerId}, '%')
+            </if>
+            <if test="authorityGrade != '' and authorityGrade != null">
+                AND authority_grade LIKE CONCAT('%', #{authorityGrade}, '%')
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

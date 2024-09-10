@@ -4,6 +4,7 @@ import com.project.tobe.dto.PriceSearchDTO;
 import com.project.tobe.entity.Price;
 import com.project.tobe.repository.PriceRepository;
 import com.project.tobe.service.PriceService;
+import com.project.tobe.util.constants.YesNo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class PriceServiceImpl implements PriceService {
 
     @Override
     public List<Price> getAllPrice() {
-        return priceRepository.findAll();
+        return priceRepository.findByActivatedEquals(YesNo.Y);
     }
 
     @Override

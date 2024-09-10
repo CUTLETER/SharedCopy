@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface EmployeeRepository extends JpaRepository<Employee, String> {
+public interface EmployeeRepository{
 
-  @Query("select e from Employee e order by e.employeeId desc")
-  List<Employee> getListDesc();
+//  @Query("select e from Employee e order by e.employeeId desc")
+//  List<Employee> getListDesc();
 
 }

@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
   }
 
 
@@ -11,21 +12,21 @@ body {
 
 #add{
   float: right;
+    /*margin-top: 30px;*/
 }
 
 
 .modal {
-overflow: auto;
-display: none; /* 모달을 띄우기 위해 사용 (숨길 때는 'none') */
-position: fixed;
-top: 0px;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
-justify-content: center;
-align-items: center;
-
+    overflow: auto;
+    display: none; /* 모달을 띄우기 위해 사용 (숨길 때는 'none') */
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
@@ -122,22 +123,30 @@ color: white;
 background-color: #ddd;
 }
 
-
-
-
-body {
-  font-family: Arial, sans-serif;
-
-}
 .seacrh-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
   margin-top: 50px;
+    /*position: relative;*/
 }
+
 .seacrh-table, th, td {
   border: 1px solid #ddd;
 }
+
+/* 각 컬럼의 너비 설정 */
+.seacrh-table th:nth-child(1) { width: 5%; }
+.seacrh-table th:nth-child(2) { width: 10%; }
+.seacrh-table th:nth-child(3) { width: 10%; }
+.seacrh-table th:nth-child(4) { width: 10%; }
+.seacrh-table th:nth-child(5) { width: 10%; }
+.seacrh-table th:nth-child(6) { width: 10%; }
+.seacrh-table th:nth-child(7) { width: 10%; }
+.seacrh-table th:nth-child(8) { width: 10%; }
+.seacrh-table th:nth-child(9) { width: 8%; }
+.seacrh-table th:nth-child(10) { width: 8%; }
+.seacrh-table th:nth-child(11) { width: 8%; }
 
 .seacrh-table th {
   border-top : 2px solid #0063ac;
@@ -147,16 +156,14 @@ body {
   background-color: rgba(200, 230, 255, 0.366);
 }
 
-
+.seacrh-table tbody td i {
+   float : right;
+   cursor :pointer;
+}
 
 tr:nth-child(0){
   font-weight: bold;
 }
-
-/* tr:nth-last-child(1) {
-  font-weight: bold;
-  background-color: #f4f4f4;
-} */
 
 .seacrh-table  th, td {
   padding: 10px;
@@ -164,152 +171,108 @@ tr:nth-child(0){
 
 }
 .seacrh-table  th {
-  background:#f4f4f4;
-
+    background: rgb(241,241,241);
+    background: linear-gradient(1deg, rgba(241,241,241,1) 0%, rgba(255,255,255,1) 100%);
 }
 
 
-.top-nav {
-  border-bottom: 1px solid #ddd;
-  background-color: #f3f3f3;
-  height: 80px;
-
-
+.filter-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    background-color: #f4f4f4;
+    margin: auto;
+    background: linear-gradient(0deg, rgb(246 246 246) 0%, rgba(255, 255, 255, 1) 100%);
+    box-shadow: 0px 2px 20px 0px #fafafa;
 }
 
-.user-profile {
-    margin-top: 10px;
-    float: right;
-    width: 300px;
-    height: 100%;
-
+.pageHeader {
+    margin-bottom : 60px;
 }
 
+.pageHeader .bi {
+    margin-right : 10px;
+}
 
-.user-profile-box {
-    /*홍길동 님*/
+.filter-item {
     display: flex;
-    align-items: center
+    align-items: center;
+    position: relative;
+    gap: 5px;
 }
 
-.user-profile-button{
-    /*버튼*/
-    /*padding: 10px 16px;*/
+.filter-label {
+    margin-right: 8px;
+    white-space: nowrap;
+
+}
+
+.filter-row {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}
+
+.filter-input {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    width: 80%; /* 셀렉트 박스가 부모 요소의 폭에 맞게 조정 */
+}
+
+.filter-select {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    display: block; /* 셀렉트 박스를 블록 요소로 설정 */
+    width: 60%; /* 셀렉트 박스가 부모 요소의 폭에 맞게 조정 */
+}
+
+.filter-input:required:invalid {
+    border-color: #ddd;
+}
+
+.search-button {
+    position: absolute;
+    right: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 14px;
+}
+
+.filter-button {
+    grid-column-end: 7;
+    margin-top: 20px;
+    padding: 8px 16px;
     border: 1px solid #004e90;
     background-color: #004e90;
     color: white;
-    font-size: 12px;
-    border-radius: 2px;
+    font-size: 16px;
+    border-radius: 3px;
     cursor: pointer;
 }
 
-.user-mypage-button{
-    /*마이페이지 버튼*/
-    width: 80px;
-    height: 25px;
-    background-color: #f3f3f3;
-    color: #004e90;
+.filter-button:hover {
+    background-color: #0056b3;
 }
 
-.user-logout-button{
-    /*로그아웃 버튼*/
-    width: 80px;
-    height: 25px;
+.info-icon {
+    position: relative;
+    display: inline-block;
 }
 
-.user-profile-info {
-    /*홍길동 님 + 버튼 2개 감싼 박스*/
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.user-profile-img{
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    margin-right: 15px;
+.info-icon i {
+    font-size: 13px;
 }
 
 
-
-
-      .filter-container {
-          display: grid;
-          grid-template-columns: repeat(6, 1fr);
-          gap: 10px;
-          padding: 20px;
-          border: 1px solid #ddd;
-          border-radius: 2px;
-          background-color: #f4f4f4;
-          margin: auto;
-
-          /*연습*/
-          font-size: 13px;
-      }
-
-      .filter-item {
-          display: flex;
-          align-items: center;
-          position: relative;
-      }
-
-      .filter-item label {
-          margin-right: 8px;
-          white-space: nowrap;
-
-      }
-
-      /*연습*/
-      .filter-input{
-        width: 110px;
-      }
-
-      .filter-input, .filter-select {
-          flex: 1;
-          padding: 5px;
-          border: 1px solid #ddd;
-          border-radius: 3px;
-      }
-
-      .filter-input:required:invalid {
-          border-color: #ddd;
-      }
-
-      .search-button {
-          position: absolute;
-          right: 5px;
-          cursor: pointer;
-          background: none;
-          border: none;
-          font-size: 14px;
-      }
-
-      .filter-button {
-          /*연습용 버튼 추가로 만드느라 아래 주석 처리했음*/
-          /*grid-column-end  : 7;*/
-          /*margin-top: 20px;*/
-          /*padding: 8px 16px;*/
-          border: 1px solid #004e90;
-          background-color: #004e90;
-          color: white;
-          font-size: 16px;
-          border-radius: 3px;
-          cursor: pointer;
-          width: 120px;
-          height: 30px;
-      }
-
-      .filter-button:hover {
-          background-color: #0056b3;
-      }
-
-
-      .breadcrumb {
+.breadcrumb {
           display: flex;
           align-items: center;
           font-size: 15px;
@@ -342,3 +305,49 @@ tr:nth-child(0){
           display: inline-block;
           margin-right: 5px;
       }
+
+/* 툴립 */
+.tooltip {
+    display: none;
+    position: absolute;
+    top: -120%;
+    left: -80%;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: max-content;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 10;
+    font-size: 13px;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -30%;
+    left: 15%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.info-icon:hover .tooltip {
+    display: block;
+    opacity: 1;
+}
+
+/*  sort */
+.sortBtn {
+    border: 1px solid #d0d0d0;
+    margin-left: 10px;
+    color: #4c4c4c;
+    font-size: 15px;
+    width: 22px;
+    height: 20px;
+    text-align: center;
+    padding: 0px;
+}

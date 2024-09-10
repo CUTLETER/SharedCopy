@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #00477A;
+        }
+    </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root" style="margin: 0 auto;"></div>
 
 <script th:src="@{'/bundle/' + ${pageName} + '.bundle.js'}"></script>
 </body>

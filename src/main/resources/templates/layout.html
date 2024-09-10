@@ -12,6 +12,7 @@
 
 <div class='mainBox'>
     <div class="sidebar">
+        <img src="/img/logo.png" alt="logo"/>
         <a href="./customer.do"> 고객 관리 </a>
         <a href="./product.do"> 상품 관리 </a>
         <a href="./order.do"> 주문 관리 </a>
@@ -27,7 +28,7 @@
 
             <div class="icon-box">
                 <!--부트스트랩 아이콘 활용, 추후에 경로 수정해야 함-->
-                <i class="bi bi-house-door-fill home-icon" onclick="window.location.href='./confirm.do';"></i>
+                <i class="bi bi-house-door-fill home-icon" onclick="window.location.href='./main.do';"></i>
             </div>
 
             <div class="user-profile">
@@ -38,7 +39,7 @@
                     </div>
                     <div class="user-profile-buttons">
                         <!--마이페이지 연습-->
-                        <button type="button" class="user-profile-button user-mypage-button">마이 페이지</button>
+                        <button type="button" class="user-profile-button user-mypage-button" onclick="location.href='./myPage.do'">마이 페이지</button>
                         <button type="button" class="user-profile-button user-logout-button" onclick="location.href='./login.do'">로그아웃</button>
                     </div>
                 </div>
@@ -57,6 +58,5 @@
     <script th:src="@{'/bundle/' + ${pageName} + '.bundle.js'}"></script>
 
 
-</div>
 </body>
 </html>

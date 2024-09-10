@@ -1,5 +1,6 @@
 package com.project.tobe.entity;
 
+import com.project.tobe.util.constants.YesNo;
 import lombok.*;
 import org.hibernate.annotations.Check;
 
@@ -8,7 +9,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "price")
-//@Check(name = "check_yes_no", expression = "activated IN ('y', 'n')")
 @Getter
 @Setter
 @ToString
@@ -33,8 +33,9 @@ public class Price {
     private Double discount;
     private LocalDate startDate;
     private LocalDate endDate;
+    @Enumerated(EnumType.STRING)
     @Column(name = "activated", length = 1)
-    private Character activated;
+    private YesNo activated;
 
     public Price(
             LocalDate registerDate,
@@ -44,7 +45,7 @@ public class Price {
             Double discount,
             LocalDate startDate,
             LocalDate endDate,
-            Character activated
+            YesNo activated
     ) {
         this.registerDate = registerDate;
         this.productNo = productNo;

@@ -1,14 +1,19 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+
 .app-title {
   border : 1px solid red;
   color : red;
 }
+
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  }
+  font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+      height: 100%;
+      width: 100%;
+}
 
   .mainBox {
     margin: 0;
@@ -62,7 +67,7 @@ body {
 /* home 아이콘 때문에 아래부터 다 건드림 */
 .top-nav {
   border-bottom: 1px solid #ddd;
-  background-color: #f3f3f3;
+  /*background-color: #f3f3f3;*/
   height: 80px;
   display: flex;
   align-items: center;
@@ -81,42 +86,54 @@ body {
   cursor: pointer;
 }
 
+
 .user-profile {
+  margin-top: 10px;
+  float: right;
   width: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  height: 100%;
+
 }
 
-.user-profile-button {
+
+.user-profile-box {
+  /*홍길동 님*/
+  display: flex;
+  align-items: center
+}
+
+.user-profile-button{
+  /*버튼*/
+  /*padding: 10px 16px;*/
   border: 1px solid #004e90;
   background-color: #004e90;
   color: white;
   font-size: 12px;
   border-radius: 2px;
   cursor: pointer;
-  margin-left: 10px; /* 버튼 간의 간격 */
 }
 
-/* 마이 페이지 버튼 새로 생성함*/
-.user-mypage-button {
+.user-mypage-button{
+  /*마이페이지 버튼*/
   width: 80px;
   height: 25px;
   background-color: #f3f3f3;
   color: #004e90;
 }
 
-/* 로그아웃 버튼도 덩달아 수정함 */
-.user-logout-button {
+.user-logout-button{
+  /*로그아웃 버튼*/
   width: 80px;
   height: 25px;
 }
 
 .user-profile-info {
+  /*홍길동 님 + 버튼 2개 감싼 박스*/
+  align-items: center;
   font-size: 18px;
   font-weight: bold;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -129,6 +146,7 @@ body {
 }
 
 
+
 .main-content {
   flex: 1;
   background-color: #ffffff;
@@ -136,6 +154,5 @@ body {
   flex-direction: column;
 }
 #root {
-  margin-left:50px;
-  margin-top:20px;
+  margin: 20px 50px;
 }

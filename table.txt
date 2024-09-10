@@ -13,7 +13,7 @@ create table product (
 );
 
 
--- Price Table
+-- Main Table
 create sequence seq_price start 1;
 create table price (
                        price_no bigint default nextval('seq_price'),

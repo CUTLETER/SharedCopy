@@ -1,15 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
 body {
-    font-family: Arial, sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
     margin: 0;
     padding: 0;
 }
+.filter-containers {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background-color: #f9f9f9;
+    align-items: start; /* Align items at the start vertically */
+    margin-bottom: 40px;
+    margin-top: 30px;
+}
 
+.filter-container {
+    display: grid;
+    grid-template-columns: 3fr 0fr; /* Left side with filter items, right side with button */
+    margin-bottom: 30px;
+}
 
+.filter-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for filter items */
+    gap: 20px 7%;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Reduced space between label and input */
+}
+.filter-item label {
+    width: 25%;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+.filter-item input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+.button-container {
+    display: flex;
+    align-items: center; /* 세로(위아래) 가운데 정렬 */
+    justify-content: flex-end; /* 가로 가운데 정렬 (필요 시) */
+}
+.search-btn {
+    padding: 10px 20px;
+    background-color: #004e90;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 3%;
+    text-align: center;
+    display: flex;
+    align-items: center; /* 세로(위아래) 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+}
+.search-btn .bi {
+    text-align: center;
+    display: block;
+}
+
+.search-btn:hover {
+    background-color: #003561;
+}
 /* styles.css */
 
-#add {
+.btn-common {
+    padding: 6px 12px;
+    border: 1px solid #004e90;
+    background-color: #004e90;
+    color: white;
+    font-size: 14px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.add {
     float: right;
+    margin-bottom: 10px;
+}
+.delete-btn {
+    position: absolute;
+    top: -45px;
 }
 
 
@@ -24,7 +107,6 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-
 }
 
 .modal-content {
@@ -49,7 +131,7 @@ body {
     margin: 40px;
 }
 
-.main-name1 {
+.main-name1{
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 40px;
@@ -72,7 +154,7 @@ h2 {
     flex-direction: column;
 }
 
-.form-group label {
+.form-group label{
     font-weight: bold;
 }
 
@@ -101,7 +183,6 @@ input {
     gap: 10px;
 }
 
-
 .submit-btn, .cancel-btn, .cancel-btn2, .cancel-btn3 {
     padding: 10px 20px;
     font-size: 14px;
@@ -115,30 +196,52 @@ input {
     color: white;
 }
 
-.cancel-btn, .cancel-btn2 {
+.cancel-btn , .cancel-btn2{
     background-color: #ddd;
 }
 
-.seacrh-table {
+.search-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.8rem;
+    margin-top: 100px;
+    position: relative;
 }
-
-.seacrh-table, th, td {
+.search-table, th, td {
     border: 1px solid #ddd;
 }
 
-.seacrh-table th {
-    border-top: 2px solid #0063ac;
+.search-table th {
+    border-top : 2px solid #0063ac;
+    text-align: center;
 }
 
-.seacrh-table tr:hover {
+.search-table tr:hover{
     background-color: rgba(200, 230, 255, 0.366);
 }
 
+.search-table tbody tr:last-child {
+    font-weight: bold; /* Apply bold styling */
+    background: rgb(241,241,241);
+         background: linear-gradient(1deg, rgba(241,241,241,1) 0%, rgba(255,255,255,1) 100%);
+}
+.search-table tbody tr:last-child td {
+    text-align: center;
+}
 
-tr:nth-child(0) {
+.search-table tbody td i {
+    float : right;
+    cursor :pointer;
+}
+
+.search-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-right: 10px;
+}
+
+tr:nth-child(0){
     font-weight: bold;
 }
 
@@ -147,102 +250,28 @@ tr:nth-child(0) {
   background-color: #f4f4f4;
 } */
 
-.seacrh-table th, td {
+.search-table  th, td {
     padding: 10px;
     text-align: left;
 
 }
-
-.seacrh-table th {
-    background: #f4f4f4;
-
-}
-
-
-.top-nav {
-    border-bottom: 1px solid #ddd;
-    background-color: #f3f3f3;
-    height: 80px;
-
+.search-table  th {
+     background: rgb(241,241,241);
+     background: linear-gradient(1deg, rgba(241,241,241,1) 0%, rgba(255,255,255,1) 100%);
 
 }
 
-
-.user-profile {
-    margin-top: 10px;
-    float: right;
-    width: 300px;
-    height: 100%;
-
+.search-table th:nth-child(1),
+.search-table th:nth-child(2),
+.search-table td:nth-child(3),
+.search-table td:nth-child(1) {
+    text-align: center;
 }
-
-
-.user-profile-box {
-    display: flex;
-
-    align-items: center
+.pageHeader {
+    margin-bottom : 60px;
 }
-
-.user-profile-button {
-    padding: 10px 16px;
-    border: 1px solid #004e90;
-    background-color: #004e90;
-    color: white;
-    font-size: 16px;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.user-profile-info {
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.user-profile-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    margin-right: 15px;
-}
-
-
-.filter-container {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    background-color: #f4f4f4;
-    margin: auto;
-}
-
-.filter-item {
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-.filter-item label {
-    margin-right: 8px;
-    white-space: nowrap;
-
-}
-
-.filter-input, .filter-select {
-    flex: 1;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-}
-
-.filter-input:required:invalid {
-    border-color: #ddd;
+.pageHeader .bi {
+    margin-right : 10px;
 }
 
 .search-button {
@@ -254,22 +283,7 @@ tr:nth-child(0) {
     font-size: 14px;
 }
 
-.filter-button {
-    grid-column-end: 7;
 
-    margin-top: 20px;
-    padding: 8px 16px;
-    border: 1px solid #004e90;
-    background-color: #004e90;
-    color: white;
-    font-size: 16px;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.filter-button:hover {
-    background-color: #0056b3;
-}
 
 
 .breadcrumb {
@@ -305,6 +319,26 @@ tr:nth-child(0) {
     display: inline-block;
     margin-right: 5px;
 }
+
+
+.selected-row {
+    background-color: rgba(200, 230, 255, 0.366);
+}
+
+
+/*  sort */
+.sortBtn {
+        border: 1px solid #d0d0d0;
+       margin-left: 10px;
+       color: #4c4c4c;
+       font-size: 15px;
+       width: 22px;
+       height: 20px;
+       text-align: center;
+       padding: 0px;
+    float : right;
+    }
+
 
 .chart-container {
     margin: 0 auto;

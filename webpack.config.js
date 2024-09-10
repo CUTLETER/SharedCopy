@@ -7,13 +7,14 @@ module.exports = {
     entry: {
 
         login: './login/Login.js', // 로그인
-        user: './user/User.js', // 직원
+        employee: './employee/employee.js', // 직원
         order: './order/Order.js', //주문
         buyer: './buyer/Buyer.js',// 고객
         product: './product/Product.js', // 상품
         confirm: './confirm/Confirm.js', // 결재
-        price: './price/Price.js', // 판매가
-
+        price: './price/price.js', // 판매가
+        myPage: './myPage/myPage.js', // 판매가
+        main: './main/Main.js',
     },
     devtool: 'sourcemaps',
     cache: true,

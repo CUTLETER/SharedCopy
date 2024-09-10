@@ -1,12 +1,12 @@
 package com.project.tobe.controller;
 
 
+import com.project.tobe.dto.EmployeeSearchDTO;
 import com.project.tobe.entity.Employee;
-import com.project.tobe.repository.EmployeeRepository;
+import com.project.tobe.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,21 +14,32 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
+//  @Autowired
+//  private EmployeeRepository employeeRepository;
+
   @Autowired
-  private EmployeeRepository employeeRepository;
+  @Qualifier("employeeService")
+  private EmployeeService employeeService;
 
+//    @GetMapping("/employeeOne")
+//    public Employee employeeOne() {
+//        Employee e = new Employee("hyeju11"	,"asdf1234",	"임혜주",	"010-1111-1111"	,"asdf@gamil.com"	,"서울"	,"11111-1111111" , LocalDate.parse("2020-01-01", DateTimeFormatter.ISO_LOCAL_DATE),	(long)120000	,"master",	"S");
+//        return e;
+//        }
 
-  @GetMapping("/employee")
-  public List<Employee> getEmployee() {
-//    System.out.println(employeeRepository.findById("hyeju11").orElse(null));
-    return employeeRepository.findAll();
+    @GetMapping("/employeeALL")
+    public List<Employee> employeeALL() {
+      List<Employee> emploList = employeeService.getAllList();
+      return employeeService.getAllList();
+    }
+
+  @PostMapping("/employeeSearch")
+  public List<Employee> employeePick(@RequestBody EmployeeSearchDTO dto) {
+    System.out.println("컨트롤러");
+    System.out.println(dto);
+    return employeeService.getPickList(dto);
   }
 
-  @GetMapping("/employeeF")
-  public List<Employee> getListDesc() {
-//    System.out.println(employeeRepository.findById("hyeju11").orElse(null));
-    return employeeRepository.getListDesc();
-  }
 
 
 }

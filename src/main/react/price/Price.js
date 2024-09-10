@@ -1,10 +1,12 @@
-// import axios from 'axios';
-import React, {useState} from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from "react-dom/client";
 import './Price.css';
 import useCheckboxManager from "../js/CheckboxManager";
+import useSort from '../js/useSort';
+import '../js/modalAdd.css';
 
-import { Bar, Line } from 'react-chartjs-2';
+import {Bar} from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     BarElement,
@@ -16,6 +18,7 @@ import {
     LineElement,
     PointElement
 } from 'chart.js';
+import e from "babel-loader/lib/Error";
 
 ChartJS.register(
     BarElement,
@@ -30,25 +33,8 @@ ChartJS.register(
 
 
 function Price() {
-    const {
-        allCheck,
-        checkItem,
-        showDelete,
-        handleMasterCheckboxChange,
-        handleCheckboxChange,
-        handleDelete
-    } = useCheckboxManager();
-    let [price, setPrice] = useState();
-
-    let handleBtn = async () => {
-        // let data = await fetch('/test/get').then(res => res.json());
-        // let {data} = await axios.get('/test/get');
-        // console.log(data);
-        //
-        // setUser({id: data.id, pw: data.pw});
-    }
     // Data and options for the chart
-    const data = {
+    const chartData = {
         labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
         datasets: [
             {
@@ -70,6 +56,8 @@ function Price() {
             }
         ]
     };
+
+    const [isChartVisible, setIsChartVisible] = useState(false);
 
     const options = {
         responsive: true,
@@ -96,123 +84,596 @@ function Price() {
         }
     };
 
-    const priceData = [
-        {registerDate : '2021-01-01T00:00:00.000Z', productNo : 1, customerNo : 1, customPrice : 1000, currency : '$', discount : 1, startDate : '2021-01-01', endDate : '2021-01-01'},
-        {registerDate : '2021-01-02T00:00:00.000Z', productNo : 2, customerNo : 2, customPrice : 2000, currency : '￦', discount : 2, startDate : '2021-01-02', endDate : '2021-01-02'},
-        {registerDate : '2021-01-03T00:00:00.000Z', productNo : 3, customerNo : 3, customPrice : 3000, currency : '$', discount : 3, startDate : '2021-01-03', endDate : '2021-01-03'},
-        {registerDate : '2021-01-04T00:00:00.000Z', productNo : 4, customerNo : 4, customPrice : 4000, currency : '￦', discount : 4, startDate : '2021-01-04', endDate : '2021-01-04'},
-        {registerDate : '2021-01-05T00:00:00.000Z', productNo : 5, customerNo : 5, customPrice : 5000, currency : '$', discount : 5, startDate : '2021-01-05', endDate : '2021-01-05'}
-    ];
+    const {
+        allCheck,
+        checkItem,
+        showDelete,
+        handleMasterCheckboxChange,
+        handleCheckboxChange,
+        handleDelete
+    } = useCheckboxManager();
 
-    let priceDataSortedByProductNo = priceData.toSorted((a,b) => b.productNo - a.productNo);
-    // console.log(priceDataSortedByProductNo);
+    const [price, setPrice] = useState([
+        {
+            priceNo: '',
+            registerDate: '',
+            productNo: '',
+            customerNo: '',
+            customPrice: '',
+            currency: 0,
+            discount: '',
+            startDate: 0,
+            endDate: ''
+        }
+    ]); // 리스트 데이터를 저장할 state
 
-    let priceDataSortedByCurrency = priceData.toSorted((a,b) => {
-        if (a.currency > b.currency) return 1;
-        else return -1;
+    const [product, setProduct] = useState([
+        {
+            productNo: '',
+            productName: '',
+            productWriter: '',
+            productCategory: '',
+            productQty: 0,
+            productType: '',
+            productPrice: 0,
+            productYn: ''
+        }
+    ]); // 리스트 데이터를 저장할 state
+
+    // 서버에서 데이터 가져오기
+    useEffect( () => {
+        const fetchData = async () => {
+            try {
+                let {data} = await axios('/price/all');
+
+                setPrice(data.priceList); // 데이터를 state에 저장
+                // setOrder(data.priceList);
+            } catch (error) {
+                console.error("데이터를 가져오는 중 오류 발생:", error);
+            }
+        };
+        fetchData();
+
+    }, []); // 컴포넌트가 처음 마운트될 때만 실행
+
+    let [searchPrice, setSearchPrice] = useState({
+        registerDate: '',
+        productNo: '',
+        customerNo: '',
+        startDate: '',
+        endDate: ''
     });
-    // console.log(priceDataSortedByCurrency);
 
-    let priceDataSortedByInt = priceData.toSorted((a,b) => {
-        if (a.customerNo < b.customerNo) return 1;
-        else return -1;
-    });
-    // console.log(priceDataSortedByInt);
-
-    let newList = priceData.map((item, index) => {
-        return <tr key={index} className={checkItem[item.id] ? 'selected-row' : ''}>
-            <td><input type="checkbox" checked={checkItem[item.id] || false}
-                       onChange={handleCheckboxChange}/></td>
-            <td>{index + 1}</td>
-            <td>{item.registerDate}</td>
-            <td>{item.productNo}</td>
-            <td>{item.customerNo}</td>
-            <td>{item.customPrice}</td>
-            <td>{item.currency}</td>
-            <td>{item.discount}</td>
-            <td>{item.startDate}</td>
-            <td>{item.endDate}</td>
-        </tr>
-    });
+    let handleSearchPriceChange = (e) => {
+        let copy = {...searchPrice, [e.name]: e.value};
+        setSearchPrice(copy);
+    }
 
     const handleSearchBtn = async () => {
-        let searchData = await axios.post('/price/')
+        console.log(JSON.stringify(searchPrice));
+        let {data} = await axios.post('/price/search', JSON.stringify(searchPrice), {
+            headers: {
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        console.log(JSON.stringify(data));
+        setPrice(data);
+
+        if (searchPrice.productNo !== '' && searchPrice.customerNo !== '') {
+            setIsChartVisible(true);
+        }
+    }
+
+
+// --- 테이블 정렬 기능
+    const { sortedData, sortData, sortConfig } = useSort(price);
+
+// --- 상세 모달창 띄우는 스크립트
+    const [isVisibleDetail, setIsVisibleDetail] = useState(false);
+
+    const handleAddClickDetail = () => {
+        setIsVisibleDetail(true);
+    };
+
+    const handleCloseClickDetail = () => {
+        setIsVisibleDetail(false);
+    };
+
+    const [isVisibleCSV, setIsVisibleCSV] = useState(false);
+
+    const handleAddClickCSV = () => {
+        setIsVisibleCSV((prevState) => !prevState);
+    };
+
+// --- 추가 모달창 띄우는 스크립트
+    const [isVisible, setIsVisible] = useState(false);
+
+    const handleAddClick = () => {
+        setIsVisible(true);
+    };
+
+    const handleCloseClick = () => {
+        setIsVisible(false);
+    };
+
+    const [modifyItem, setModifyItem] = useState([
+        {
+            priceNo: '',
+            registerDate: '',
+            productNo: '',
+            customerNo: '',
+            customPrice: '',
+            currency: 0,
+            discount: '',
+            startDate: 0,
+            endDate: ''
+        }
+    ]);
+    const [isModifyModalVisible, setIsModifyModalVisible] = useState(false);
+    const handleModify = (item) => {
+        setModifyItem(item);
+        setIsModifyModalVisible(true);
+
+    }
+
+    const handleModifyCloseClick = () => {
+        setIsModifyModalVisible(false);
+    }
+
+    const handleModifyItemChange = (e) => {
+        let copy = {...modifyItem, [e.name]: e.value};
+        setModifyItem(copy);
+    }
+
+    const [insertPrice, setInsertPrice] = useState({
+        priceNo: '',
+        registerDate: '',
+        productNo: '',
+        customerNo: '',
+        customPrice: '',
+        currency: 0,
+        discount: '',
+        startDate: 0,
+        endDate: ''
+    });
+
+    const handleInsertPrice = (e) => {
+        let copy = {...insertPrice, [e.name]: e.value};
+        setInsertPrice(copy);
+    }
+
+    const [insertPriceList, setInsertPriceList] = useState([{
+        priceNo: '',
+        registerDate: '',
+        productNo: '',
+        customerNo: '',
+        customPrice: '',
+        currency: 0,
+        discount: '',
+        startDate: 0,
+        endDate: ''
+    }]);
+
+    const handleInsertPriceList = () => {
+        let copy = [...insertPriceList, insertPrice];
+        setInsertPriceList(copy);
     }
 
     return (
 
-        <div >
-            {/*<div>*/}
-            {/*    <button type="button" onClick={handleBtn}>test</button>*/}
-            {/*    <h1>{user.id} - {user.pw}</h1>*/}
-            {/*</div>*/}
-
+        <div>
             <h1><i className="bi bi-search"></i> 판매가 리스트 </h1>
-
-
             <div className="main-container">
-                <div className="filter-container">
+                <div className="filter-containers">
+                    <div className="filter-container">
+                        <div className="filter-items">
+                            <div className="filter-item">
+                                <label className="filter-label" htmlFor="product">상품</label>
+                                <input name="productNo" className="filter-input" type="text" id="product"
+                                       value={searchPrice.productNo}
+                                       placeholder="상품"
+                                       onChange={(e) => {
+                                           handleSearchPriceChange(e.target)
+                                       }}/>
+                            </div>
 
-                    <div className="filter-row">
-                        <label className="filter-label" htmlFor="date">등록일자</label>
-                        <input className="filter-input" type="date" id="date" required/>
+                            <div className="filter-item">
+                                <label className="filter-label" htmlFor="customer">업체</label>
+                                <input name="customerNo" className="filter-input" type="text" id="customer"
+                                       value={searchPrice.customerNo}
+                                       placeholder="고객"
+                                       onChange={(e) => {
+                                           handleSearchPriceChange(e.target)
+                                       }}/>
+                            </div>
+                            
+                            <div className="filter-item">
+                                <label className="filter-label" htmlFor="date">등록일자</label>
+                                <input name="registerDate" className="filter-input" type="date" id="date"
+                                       value={searchPrice.registerDate}
+                                       onClick={(e) => {
+                                       }}
+                                       onChange={(e) => {
+                                           handleSearchPriceChange(e.target)
+                                       }}
+                                />
+                            </div>
+
+                            <div className="filter-item">
+                                <label className="filter-label" htmlFor="startDate">시작일자</label>
+                                <input name="startDate" className="filter-input" type="date" id="startDate"
+                                       value={searchPrice.startDate}
+                                       onChange={(e) => {
+                                           handleSearchPriceChange(e.target)
+                                       }}
+                                />
+                            </div>
+
+                            <div className="filter-item">
+                                <label className="filter-label" htmlFor="endDate">종료일자</label>
+                                <input name="endDate" className="filter-input" type="date" id="endDate"
+                                       value={searchPrice.endDate}
+                                       onChange={(e) => {
+                                           handleSearchPriceChange(e.target)
+                                       }}/>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="filter-row">
-                        <label className="filter-label" htmlFor="manager">상품</label>
-                        <input className="filter-input" type="text" id="manager" placeholder="담당자" required/>
+                    <div className="button-container">
+                        <button type="button" className="search-btn" onClick={handleSearchBtn}><i
+                            className="bi bi-search search-icon"></i>
+                        </button>
                     </div>
-
-                    <div className="filter-row">
-                        <label className="filter-label" htmlFor="warehouse">고객</label>
-                        <input className="filter-input" type="text" id="warehouse" placeholder="출하창고" required/>
-                    </div>
-
-                    <div className="filter-row">
-                        <label className="filter-label" htmlFor="date">시작일자</label>
-                        <input className="filter-input" type="date" id="date" required/>
-                    </div>
-
-                    <div className="filter-row">
-                        <label className="filter-label" htmlFor="date">종료일자</label>
-                        <input className="filter-input" type="date" id="date" required/>
-                    </div>
-
-                    <button className="filter-button" onClick={handleSearchBtn}>조회</button>
                 </div>
 
-                <div style={{width: "100%", alignItems: "center", backgroundColor: "#fcfcfc"}}>
+                {isChartVisible && <div
+                    style={{width: "100%", alignItems: "center", backgroundColor: "#fcfcfc", marginBottom: "50px"}}>
                     <div className="chart-container">
                         <div className="chart-header">
                             <h3>분기별 매출 예측</h3>
-                            <button>데이터 업데이트</button>
                         </div>
                         {/*<div className="canvas"><Bar data={data} options={options} /></div>*/}
-                        <Bar data={data} options={options}  className="canvas"/>
+                        <Bar data={chartData} options={options} className="canvas"/>
                     </div>
-                </div>
+                </div>}
 
-                <table className="seacrh-table">
-                    {showDelete && <button className='delete-btn' onClick={handleDelete}>삭제</button>}
+                <button className="btn-common add" type="button" onClick={handleAddClick}>
+                    판매가 등록
+                </button>
+
+                <table className="search-table" style={{marginTop: "50px"}}>
+                    {showDelete && <button className='delete-btn btn-common' onClick={handleDelete}>삭제</button>}
                     <thead>
                     <tr>
                         <th><input type="checkbox" checked={allCheck} onChange={handleMasterCheckboxChange}/></th>
                         <th> No.</th>
-                        <th> 등록일</th>
-                        <th> 상품명</th>
-                        <th> 업체명</th>
-                        <th> 가격</th>
-                        <th> 통화</th>
-                        <th> 할인율(%)</th>
-                        <th> 시작일</th>
-                        <th> 종료일</th>
+                        <th>등록일
+                            <button className="sortBtn" onClick={() => sortData('registerDate')}>
+                                {sortConfig.key === 'registerDate' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>상품명
+                            <button className="sortBtn" onClick={() => sortData('productNo')}>
+                                {sortConfig.key === 'productNo' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>업체명
+                            <button className="sortBtn" onClick={() => sortData('customerNo')}>
+                                {sortConfig.key === 'customerNo' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>가격
+                            <button className="sortBtn" onClick={() => sortData('customPrice')}>
+                                {sortConfig.key === 'customPrice' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>통화
+                            <button className="sortBtn" onClick={() => sortData('currency')}>
+                                {sortConfig.key === 'currency' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>할인율(%)
+                            <button className="sortBtn" onClick={() => sortData('discount')}>
+                                {sortConfig.key === 'currency' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>시작일
+                            <button className="sortBtn" onClick={() => sortData('startDate')}>
+                                {sortConfig.key === 'startDate' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>종료일
+                            <button className="sortBtn" onClick={() => sortData('endDate')}>
+                                {sortConfig.key === 'endDate' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
-                    {/*{newList}*/}
+                    {sortedData.length > 0 ? (
+                        sortedData.map((item, index) => (
+                            <tr key={index} className={checkItem[index] ? 'selected-row' : ''} onDoubleClick={() => {
+                                handleModify(item)
+                            }}>
+                                <td><input type="checkbox" checked={checkItem[index] || false}
+                                           onChange={handleCheckboxChange}/></td>
+                                <td style={{display: 'none'}}>{index}</td>
+                                <td>{index + 1}</td>
+                                <td>{item.registerDate} </td>
+                                <td>{item.productNo}</td>
+                                <td>
+                                    {item.customerNo}
+                                    <i className="bi bi-search details"
+                                       onClick={handleAddClickDetail}/>
+                                </td>
+                                <td>{item.customPrice}</td>
+                                <td>{item.currency}</td>
+                                <td>{item.discount}</td>
+                                <td>{item.startDate}</td>
+                                <td>{item.endDate}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="10">등록된 상품이 없습니다😭</td>
+                        </tr>
+                    )}
+                    <tr>
+                        <td colSpan="9"></td>
+                        <td colSpan="1"> {sortedData.length} 건</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
+
+            {isVisible && (
+                <div className="confirmRegist">
+                    <div className="fullBody">
+                    <div className="form-container">
+                            <button className="close-btn" onClick={handleCloseClick}> &times;
+                            </button>
+                            <div className="form-header">
+                                <h1>고객 별 제품 판매가 등록</h1>
+
+                                <div className="btns">
+                                    <div className="btn-add2">
+                                        <button> 등록하기</button>
+                                    </div>
+                                    <div className="btn-close">
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className="RegistForm">
+                                <table className="formTable">
+                                    <tr>
+                                        <th colSpan="1"><label htmlFor="productNo">상품</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="productNo" value={insertPrice.productNo} onChange={(e) => {handleInsertPrice(e.target)}}/></td>
+
+                                        <th colSpan="1"><label htmlFor="customerNo">고객</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="customerNo" value={insertPrice.customerNo} onChange={(e) => {handleInsertPrice(e.target)}}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th><label htmlFor="customPrice">가격</label></th>
+                                        <td><input type="number" placeholder="필드 입력" id="customPrice" value={insertPrice.customPrice} onChange={(e) => {handleInsertPrice(e.target)}}/></td>
+
+                                        <th><label htmlFor="currency">통화</label></th>
+                                        <td><input type="text" placeholder="필드 입력" id="currency" value={insertPrice.currency} onChange={(e) => {handleInsertPrice(e.target)}}/></td>
+
+                                        <th><label htmlFor="discount">할인율(%)</label></th>
+                                        <td><input type="number" placeholder="필드 입력" id="discount" value={insertPrice.discount} onChange={(e) => {handleInsertPrice(e.target)}}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th colSpan="1"><label htmlFor="startDate">연락처</label></th>
+                                        <td colSpan="3"><input type="date" placeholder="필드 입력" id="startDate" value={insertPrice.startDate} onChange={(e) => {handleInsertPrice(e.target)}}/>
+                                        </td>
+
+                                        <th colSpan="1"><label htmlFor="endDate">연락처</label></th>
+                                        <td colSpan="3"><input type="date" placeholder="필드 입력" id="endDate" value={insertPrice.endDate} onChange={(e) => {handleInsertPrice(e.target)}}/></td>
+                                    </tr>
+                                </table>
+
+
+                                <div className="btn-add">
+                                    <button id="downloadCsv" className="btn-CSV">CSV 샘플 양식</button>
+                                    <button id="uploadCsv" className="btn-CSV" onClick={handleAddClickCSV}>CSV 파일 업로드</button>
+                                    {isVisibleCSV && (
+                                        <input type="file" id="uploadCsvInput" accept=".csv"/>)}
+
+                                    <button className="btn-common btn-add-p"> 추가</button>
+                                </div>
+                            </div>
+
+                            <div className="RegistFormList">
+                                <div style={{fontWeight: 'bold'}}> 총 N 건</div>
+                                <table className="formTableList">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox"/></th>
+                                        <th>no</th>
+                                        <th>품목명</th>
+                                        <th>규격</th>
+                                        <th>단위</th>
+                                        <th>창고</th>
+                                        <th>LOT</th>
+                                        <th>현재고</th>
+                                        <th>실사수량</th>
+                                        <th>조정수량</th>
+                                        <th>단가</th>
+                                        <th>공급가액</th>
+                                        <th>부가세</th>
+                                        <th>총금액</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <td>1 </td>
+                                        <td>제품공고1</td>
+                                        <td>EA</td>
+                                        <td>EA</td>
+                                        <td>재품창고1 </td>
+                                        <td>L2017-11-260001</td>
+                                        <td>4,900</td>
+                                        <td>5,000</td>
+                                        <td>100</td>
+                                        <td>3,000</td>
+                                        <td>300,000</td>
+                                        <td>30,000</td>
+                                        <td>330,000</td>
+                                    </tr>
+
+                                    <tr style={{fontWeight: 'bold'}}>
+                                        <td colSpan="12"> 합계</td>
+                                        <td colSpan="2"> 13,000,000</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            )}
+            {/* 모달창의 끝  */}
+
+            {/* 수정 모달창 */}
+            {isModifyModalVisible && (
+                <div className="confirmRegist">
+                    <div className="fullBody">
+                        <div className="form-container">
+                            <button className="close-btn" onClick={handleModifyCloseClick}> &times;
+                            </button>
+                            <div className="form-header">
+                                <h1>고객 별 제품 판매가 수정</h1>
+
+                                <div className="btns">
+                                    <div className="btn-add2">
+                                        <button> 수정하기</button>
+                                    </div>
+                                    <div className="btn-close">
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className="RegistForm">
+                                <table className="formTable">
+                                    <tr>
+                                        <th colSpan="1"><label htmlFor="productNo">상품</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="productNo" value={modifyItem.productNo} onChange={(e) => {handleModifyItemChange(e.target)}}/></td>
+
+                                        <th colSpan="1"><label htmlFor="customerNo">고객</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="customerNo" value={modifyItem.customerNo} onChange={(e) => {handleModifyItemChange(e.target)}}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th><label htmlFor="customPrice">가격</label></th>
+                                        <td><input type="number" placeholder="필드 입력" id="customPrice" value={modifyItem.customPrice} onChange={(e) => {handleModifyItemChange(e.target)}}/></td>
+
+                                        <th><label htmlFor="currency">통화</label></th>
+                                        <td><input type="text" placeholder="필드 입력" id="currency" value={modifyItem.currency} onChange={(e) => {handleModifyItemChange(e.target)}}/></td>
+
+                                        <th><label htmlFor="discount">할인율(%)</label></th>
+                                        <td><input type="number" placeholder="필드 입력" id="discount" value={modifyItem.discount} onChange={(e) => {handleModifyItemChange(e.target)}}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th colSpan="1"><label htmlFor="registStartDate">연락처</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="registStartDate" value={modifyItem.startDate} onChange={(e) => {handleModifyItemChange(e.target)}}/>
+                                        </td>
+
+                                        <th colSpan="1"><label htmlFor="registEndDate">연락처</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="registEndDate" value={modifyItem.endDate} onChange={(e) => {handleModifyItemChange(e.target)}}/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            )}
+            {/* 수정 모달창 끝  */}
+
+            {/* 새로운 모달창 */}
+            {isVisibleDetail && (
+
+                <div className="confirmRegist">
+                    <div className="fullBody">
+                        <div className="form-container">
+                            <button className="close-btn" onClick={handleCloseClickDetail}> &times;
+                            </button>
+                            <div className="form-header">
+                                <h1> 고객 상세보기 </h1>
+
+                                <div className="btns">
+                                    <div className="btn-add2">
+                                        <button> 수정하기</button>
+                                    </div>
+                                    <div className="btn-close">
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className="RegistForm">
+                                <table className="formTable">
+                                    <tr>
+                                        <th colSpan="1"><label htmlFor="productNo">상품</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="productNo"
+                                                               value={modifyItem.productNo} onChange={(e) => {
+                                            handleModifyItemChange(e.target)
+                                        }}/></td>
+
+                                        <th colSpan="1"><label htmlFor="customerNo">고객</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="customerNo"
+                                                               value={modifyItem.customerNo} onChange={(e) => {
+                                            handleModifyItemChange(e.target)
+                                        }}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th><label htmlFor="customPrice">가격</label></th>
+                                        <td><input type="number" placeholder="필드 입력" id="customPrice"
+                                                   value={modifyItem.customPrice} onChange={(e) => {
+                                            handleModifyItemChange(e.target)
+                                        }}/></td>
+
+                                        <th><label htmlFor="currency">통화</label></th>
+                                        <td><input type="text" placeholder="필드 입력" id="currency"
+                                                   value={modifyItem.currency} onChange={(e) => {
+                                            handleModifyItemChange(e.target)
+                                        }}/></td>
+
+                                        <th><label htmlFor="discount">할인율(%)</label></th>
+                                        <td><input type="number" placeholder="필드 입력" id="discount"
+                                                   value={modifyItem.discount} onChange={(e) => {
+                                            handleModifyItemChange(e.target)
+                                        }}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th colSpan="1"><label htmlFor="registStartDate">연락처</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="registStartDate"
+                                                               value={modifyItem.startDate} onChange={(e) => {
+                                            handleModifyItemChange(e.target)
+                                        }}/>
+                                        </td>
+
+                                        <th colSpan="1"><label htmlFor="registEndDate">연락처</label></th>
+                                        <td colSpan="3"><input type="text" placeholder="필드 입력" id="registEndDate"
+                                                               value={modifyItem.endDate} onChange={(e) => {
+                                            handleModifyItemChange(e.target)
+                                        }}/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
 
         </div>

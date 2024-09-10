@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface PriceService {
     List<Price> getAllPrice();
-
     List<Price> getPriceByDTO(PriceSearchDTO dto);
+
+
+
 }

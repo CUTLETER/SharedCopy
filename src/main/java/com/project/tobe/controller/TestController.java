@@ -17,15 +17,15 @@ import java.util.List;
 @RequestMapping("/test")
 public class TestController {
 
-    @Autowired
-    private TestRepository testRepository;
-
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
-    @GetMapping("/get")
-    public TestDB getData() {
-        return testRepository.findById(1).orElse(null);
-    }
+//    @Autowired
+//    private TestRepository testRepository;
+//
+//    @Autowired
+//    private EmployeeRepository employeeRepository;
+//
+//    @GetMapping("/get")
+//    public TestDB getData() {
+//        return testRepository.findById(1).orElse(null);
+//    }
 
 }

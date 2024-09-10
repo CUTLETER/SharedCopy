@@ -1,6 +1,6 @@
 // src/Login.js
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import ReactDOM from "react-dom/client";
 import './Login.css'
 
@@ -19,7 +19,7 @@ function Login() {
         }
 
         // 로그인 로직 구현 부분 (예: API 요청)
-        console.log('로그인 시도:', { id, password });
+        console.log('로그인 시도:', {id, password});
 
         // 예시로 콘솔 출력
         // 실제 구현에서는 서버로 로그인 요청을 보낸 후 응답에 따라 로직을 작성합니다.
@@ -28,40 +28,24 @@ function Login() {
     };
 
     return (
-        <div className="container">
-            <h2>로그인</h2>
-            <form onSubmit={handleSubmit} className="form">
-                <div className="inputGroup">
-                    <label htmlFor="id">이메일</label>
-                    <input
-                        type="id"
-                        id="id"
-                        value={id}
-                        onChange={(e) => setid(e.target.value)}
-                        className="input"
-                        required
-                    />
+        <div className="main">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"/>
+            <div>
+                <div className="login-box">
+                    <img className="img-logo" src="./img/login.png"/>
+                    <div className="inputs-box"><i className="bi bi-person-fill"></i> <input type="text"
+                                                                                             className="input-box"/>
+                    </div>
+                    <div className="inputs-box"><i className="bi bi-lock-fill"></i> <input type="password"
+                                                                                           className="input-box"/>
+                    </div>
+                    <button type="button" className="login_btn"> 로그인</button>
                 </div>
-                <div className="inputGroup">
-                    <label htmlFor="password">비밀번호</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="input"
-                        required
-                    />
-                </div>
-                {error && <div className="error">{error}</div>}
-                <button type="submit" className="button">
-                    로그인
-                </button>
-            </form>
-        </div>
-    );
+            </div>
+        </div>);
 }
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Login />
+    <Login/>
 );

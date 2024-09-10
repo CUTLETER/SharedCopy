@@ -1,0 +1,98 @@
+.dashboard {
+    width: 90%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+.card {
+    background-color: #fff;
+    border-radius: 2px;
+    padding: 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    /* transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); */
+}
+.card h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    color: #0056b3;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 5px;
+}
+.employee-photo {
+    width: 150px;
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.chart-container {
+    position: relative;
+    height: 250px;
+}
+.top-genres {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.top-genres span {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0056b3;
+    display: flex;
+    align-items: center;
+}
+.top-genres img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+.table th {
+    background-color: #f0f0f0;
+    color: #0056b3;
+}
+.table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+.employee-ranker {
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+    background: url('#') no-repeat center;
+    background-size: cover;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.employee-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 5px solid #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
+    position: relative;
+    z-index: 2;
+}
+#employee-of-month {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 20px;
+}

@@ -5,15 +5,16 @@ import lombok.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @Builder
 public class PriceSearchDTO {
-    private Timestamp registerDate;
-    private Long productNo;
-    private Long customerNo;
+    private LocalDate registerDate;
+    private String productNo;
+    private String customerNo;
     private LocalDate startDate;
     private LocalDate endDate;
 }

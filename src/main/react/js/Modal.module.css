@@ -1,0 +1,44 @@
+/*.modal {*/
+/*    overflow: auto;*/
+/*    display: none; !* 모달을 띄우기 위해 사용 (숨길 때는 'none') *!*/
+/*    position: fixed;*/
+/*    top: 0px;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    background-color: rgba(0, 0, 0, 0.5);*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+
+/*}*/
+
+.modal {
+    padding: 0;
+    height: 100%;
+    font-size: 15px;
+    margin-top: 60px;
+
+}
+.modalContent {
+    position: relative;
+    width: 60%;
+    margin: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 50px;
+    background-color: #ffffff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.modalHeader {
+    grid-column: span 6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}

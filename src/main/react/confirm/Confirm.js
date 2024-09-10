@@ -1,150 +1,219 @@
-import React, {useState} from 'react';
-import ReactDOM from "react-dom/client";
+import React, { useEffect, useState, useCallback } from 'react';
+import ReactDOM from 'react-dom/client';
 import './Confirm.css';
+import './modal_confirm1.css';
+import ConfirmModal from './ConfirmModal';
 
 function Confirm() {
 
-    /*li 태그로 불러오기 연습*/
-    let [confirmList, setConfirmList] = useState([]);
-    const handleClick = async () => {
-        let response = await fetch('/confirm/get?allId=1,2,3');
-        let data = await response.json();
+    const [confirm, setConfirm] = useState([]);
+    const [sortConfig, setSortConfig] = useState({ key: '', direction: 'ascending' });
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [searchParams, setSearchParams] = useState({
+        customerName: '',
+        employeeName: '',
+        confirmRegDate: '',
+        confirmDate: '',
+        confirmStatus: ''
+    });
 
-        if (Array.isArray(data)) {
-            setConfirmList(data);
+// 정렬 이벤트
+    const [order, setOrder] = useState([
+        {
+            productType: '',
+            productName: '',
+            productQty: '',
+            customPrice: '',
+            confirmStatus: '',
+            confirmConfirmDate: ''
+        }
+    ]); // 리스트 데이터를 저장할 state
+
+    const sortData = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        const sortOrder = [...confirm].sort((a, b) => {
+            if (a[key] < b[key]) {
+                return direction === 'ascending' ? -1 : 1;
+            }
+            if (a[key] > b[key]) {
+                return direction === 'ascending' ? 1 : -1;
+            }
+            return 0;
+        });
+        setConfirm(sortOrder);
+        setSortConfig({ key, direction });
+    };
+
+    // 서버에서 데이터를 가져오는 함수 (예시)
+    const fetchData = async (params = {}) => {
+        try {
+            const queryString = new URLSearchParams(params).toString();
+            const response = await fetch('http://localhost:8383/confirm.do');
+            const data = await response.json();
+            console.log('data는 뭘까:'+data);
+            setConfirm(data);
+        } catch (error) {
+            console.error('데이터를 불러오는 중 오류가 발생했습니다:', error);
         }
     };
 
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+
+// 모달창
+    const handleOpenClick = () => {
+        const item = confirm.find((item, index) => checkItem[index]);
+        setSelectedItem(item || null);
+        setOpenModal(true);
+    }
+    const handleCloseClick = () => {
+        setOpenModal(false);
+        setSelectedItem(null);
+    }
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setSearchParams(prev => ({...prev, [name]: value}));
+    }
+
+    const handleUpdateItem = useCallback((updatedItem) => {
+        setConfirm(prevConfirm =>
+            prevConfirm.map(confirm =>
+                confirm.confirmNo === updatedItem.confirmNo ? updatedItem : confirm
+            )
+        );
+        setOpenModal(false);
+    }, []);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        fetchData(searchParams);
+    }
+
     return (
         <div>
-            <div>
-                {confirmList.map(item => (
-                    <li key={item.confirmNo}>결재 번호: {item.confirmNo} | 결재 여부: {item.confirmStatus} | 결재
-                        제목: {item.confirmTitle} | 결재 내용 : {item.confirmContent} | 결재 요청일 : {item.confirmRegDate}</li>
-                ))}
-            </div>
-
-            <h1> 결재 리스트 </h1>
+            <div className="pageHeader"><h1><i className="bi bi-search"></i>결재 리스트</h1></div>
 
             <div className="main-container">
                 <div className="filter-container">
-
                     <div className="filter-row">
                         <label className="filter-label" htmlFor="customerName">고객명</label>
-                        <input className="filter-input" type="text" id="customerName" placeholder="고객명"
-                               required/>
+                        <input className="filter-input" type="text" id="customerName" name="customerName"
+                               value={searchParams.employeeName} onChange={handleInputChange} placeholder="고객명" required />
                     </div>
-
                     <div className="filter-row">
                         <label className="filter-label" htmlFor="employeeName">담당자</label>
-                        <input className="filter-input" type="text" id="employeeName" placeholder="담당자"
-                               required/>
+                        <input className="filter-input" type="text" id="employeeName" name="employeeName"
+                               value={searchParams.customerName} onChange={handleInputChange} placeholder="담당자" required />
                     </div>
-
+                    <div className="filter-row">
+                        <label className="filter-label" htmlFor="confirmRegDate">시작 일자</label>
+                        <span className="info-icon">
+                            <i className="bi bi-info-circle"></i>
+                            <span className="tooltip">결재 요청일 기준</span>
+                        </span>
+                        <input className="filter-input" type="date" id="confirmRegDate" required />
+                    </div>
+                    <div className="filter-row">
+                        <label className="filter-label" htmlFor="confirmConfirmDate">종료 일자</label>
+                        <span className="info-icon">
+                            <i className="bi bi-info-circle"></i>
+                            <span className="tooltip">결재 요청일 기준</span>
+                        </span>
+                        <input className="filter-input" type="date" id="confirmConfirmDate" required />
+                    </div>
                     <div className="filter-row">
                         <label className="filter-label" htmlFor="confirmStatus">결재 여부</label>
-                        <select className="filter-select" id="confirmStatus" required>
+                        <select className="filter-select" id="confirmStatus" name="confirmStatus"
+                                value={searchParams.confirmStatus} onChange={handleInputChange} required>
                             <option value="승인">승인</option>
-                            <option value="진행 중">대기</option>
+                            <option value="대기">대기</option>
                             <option value="반려">반려</option>
                         </select>
                     </div>
-
-                    <div className="filter-row">
-                        <label className="filter-label" htmlFor="confirmRegDate">등록 일자</label>
-                        <input className="filter-input" type="date" id="confirmRegDate" required/>
-                    </div>
-
-                    <div className="filter-row">
-                        <label className="filter-label" htmlFor="confirmConfirmDate">승인 일자</label>
-                        <input className="filter-input" type="date" id="confirmConfirmDate" required/>
-                    </div>
-
-                    <button className="filter-button" onClick={handleClick}>조회</button>
+                    <button type="submit" className="filter-button">조회</button>
                 </div>
+
+                <button type="button" className="confirm-selected" onClick={handleOpenClick}>수정</button>
 
                 <table className="seacrh-table">
                     <thead>
                     <tr>
                         <th>No.</th>
                         <th>고객명</th>
-                        <th>상품 종류</th>
-                        <th>상품명</th>
-                        <th>상품 수량</th>
-                        <th>판매가(원)</th>
-                        <th>총 금액(원)</th>
+                        <th>상품 종류
+                            <button className="sortBtn" onClick={() => sortData('productType')}>
+                                {sortConfig.key === 'productType' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>상품명
+                            <button className="sortBtn" onClick={() => sortData('productName')}>
+                                {sortConfig.key === 'productName' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>상품 수량
+                            <button className="sortBtn" onClick={() => sortData('productQty')}>
+                                {sortConfig.key === 'productQty' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>판매가(원)
+                            <button className="sortBtn" onClick={() => sortData('customPrice')}>
+                                {sortConfig.key === 'customPrice' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>총 금액(원)
+                            <button className="sortBtn" onClick={() => sortData('totalAmount')}>
+                                {sortConfig.key === 'totalAmount' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
+                        <th>납품 요청일
+                            <button className="sortBtn" onClick={() => sortData('delDate')}>
+                                {sortConfig.key === 'delDate' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            </button>
+                        </th>
                         <th>담당자</th>
-                        <th>담당자 연락처</th>
                         <th>결재자</th>
                         <th>결재 여부</th>
-                        <th>비고</th>
-                        <th>결재 승인일</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>교보문고 강남점</td>
-                        <td>도서</td>
-                        <td>삼국지 -상-</td>
-                        <td>1500</td>
-                        <td>1000</td>
-                        <td>1,500,000</td>
-                        <td>유선화</td>
-                        <td>010-1234-5678</td>
-                        <td>이기성</td>
-                        <td>승인</td>
-                        <td></td>
-                        <td>2024-09-06</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>알라딘 선릉점</td>
-                        <td>도서</td>
-                        <td>인간실격</td>
-                        <td>11000</td>
-                        <td>100</td>
-                        <td>1,100,000</td>
-                        <td>홍길동</td>
-                        <td>010-1111-5578</td>
-                        <td>이기성</td>
-                        <td>승인</td>
-                        <td></td>
-                        <td>2024-09-06</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>교보문고 이대점</td>
-                        <td>도서</td>
-                        <td>무인도에서 살아남기1</td>
-                        <td>10000</td>
-                        <td>1000</td>
-                        <td>10,000,000</td>
-                        <td>이순신</td>
-                        <td>010-5464-5545</td>
-                        <td>이기성</td>
-                        <td>대기</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>YES24 신림점</td>
-                        <td>도서</td>
-                        <td>나는 누구인가</td>
-                        <td>8000</td>
-                        <td>100</td>
-                        <td>800,000</td>
-                        <td>아무개</td>
-                        <td>010-2134-5655</td>
-                        <td>이기성</td>
-                        <td>반려</td>
-                        <td>재고 부족</td>
-                        <td></td>
-                    </tr>
+                    {confirm.length > 0 ? (
+                        confirm.map((item, index) => (
+                            <tr key={item.No || index}>
+                                <td>{item.No}</td>
+                                <td>{item.customerName}</td>
+                                <td>{item.productType}</td>
+                                <td>{item.productName}</td>
+                                <td>{item.productQty}</td>
+                                <td>{item.customPrice}</td>
+                                <td>{item.totalAmount}</td>
+                                <td>{item.delDate}</td>
+                                <td>{item.employeeName}</td>
+                                <td>{item.approver}</td>
+                                <td>{item.confirmStatus}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="12">등록된 상품이 없습니다😭</td>
+                        </tr>
+                    )}
                     </tbody>
                 </table>
             </div>
+
+            <ConfirmModal
+                openModal={openModal}
+                handleCloseClick={handleCloseClick}
+                selectedItem={selectedItem}
+                onUpdateItem={handleUpdateItem}
+            />
 
         </div>
     );

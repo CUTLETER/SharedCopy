@@ -31,6 +31,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0' //마이바티스
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -53,6 +54,9 @@ dependencies {
 
 // 2022.10.28[프뚜]: log4jdbc-log4j2
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+
+
 }
 def querydslDir = "$buildDir/generated/querydsl"
 querydsl {
