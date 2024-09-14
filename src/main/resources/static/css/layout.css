@@ -78,6 +78,7 @@ body {
 /* 아이콘 감싼 박스 */
 .icon-box {
   width: 32px;
+      margin-left: 30px;
 }
 
 /* 홈 아이콘 크기 */

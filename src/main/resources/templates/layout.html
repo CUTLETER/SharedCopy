@@ -2,11 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERP Dashboard</title>
     <link rel="stylesheet" type="text/css" href="/css/layout.css" />
     <!--부트 스트랩-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+
 </head>
 <body>
 
@@ -16,9 +18,11 @@
         <a href="./customer.do"> 고객 관리 </a>
         <a href="./product.do"> 상품 관리 </a>
         <a href="./order.do"> 주문 관리 </a>
-        <a href="./confirm.do"> 결재 관리 </a>
         <a href="./price.do"> 판매가 관리 </a>
-        <a href="./employee.do"> *직원/권한 관리 </a>
+        <div th:switch="${auth}">
+        <a th:case="'S'" href="./employee.do"> 직원/권한 관리 </a>
+        </div>
+
     </div>
 
     <div class="main-content">
@@ -35,12 +39,23 @@
 
                 <div class="user-profile-info">
                     <div class="user-profile-box">
-                        <p>홍길동님</p>
+                        <p sec:authorize="isAuthenticated()">
+
+                            <p><span th:text="${nickName}">  </span> 님</p>
+
+
+                        </p>
                     </div>
                     <div class="user-profile-buttons">
                         <!--마이페이지 연습-->
+
+
+
+
+
+
                         <button type="button" class="user-profile-button user-mypage-button" onclick="location.href='./myPage.do'">마이 페이지</button>
-                        <button type="button" class="user-profile-button user-logout-button" onclick="location.href='./login.do'">로그아웃</button>
+                        <button type="button" class="user-profile-button user-logout-button" onclick="location.href='./logout'">로그아웃</button>
                     </div>
                 </div>
 

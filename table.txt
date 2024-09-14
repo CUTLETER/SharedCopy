@@ -19,14 +19,14 @@ create table price (
                        price_no bigint default nextval('seq_price'),
                        register_date date default current_timestamp,
                        product_no bigint not null,
-                       customer_no varchar(10) not null,
-                       price numeric(20) null,
+                       customer_no bigint not null,
+                       custom_price numeric(20) null,
                        currency varchar(10) null,
                        discount numeric(2) null,
                        start_date date null,
                        end_date date null,
                        activated char(1) null,
-                       constraint pk_price primary key (register_date, product_no, customer_no)
+                       constraint pk_price primary key (price_no)
 );
 
 -- Customer Table
@@ -47,8 +47,8 @@ create table customer (
       constraint pk_customer primary key (customer_no)
 );
 
--- Employee Table
-create table employee (
+-- Customer Table
+create table Customer (
       employee_id varchar(20) not null,
       employee_pw varchar(100) null,
       employee_name varchar(50) null,

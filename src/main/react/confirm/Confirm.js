@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import ReactDOM from 'react-dom/client';
 import './Confirm.css';
 import './modal_confirm1.css';
@@ -6,8 +6,8 @@ import ConfirmModal from './ConfirmModal';
 
 function Confirm() {
 
-    const [confirm, setConfirm] = useState([]);
-    const [sortConfig, setSortConfig] = useState({ key: '', direction: 'ascending' });
+    const [formList, setFormList] = useState([]); // 상태 및 업데이트 함수 정의
+    const [sortConfig, setSortConfig] = useState({key: '', direction: 'ascending'});
     const [openModal, setOpenModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [searchParams, setSearchParams] = useState({
@@ -21,12 +21,14 @@ function Confirm() {
 // 정렬 이벤트
     const [order, setOrder] = useState([
         {
+            orderNo: '',
             productType: '',
             productName: '',
-            productQty: '',
+            orderQty: '',
             customPrice: '',
             confirmStatus: '',
-            confirmConfirmDate: ''
+            confirmConfirmDate: '',
+            totalAmount: ''
         }
     ]); // 리스트 데이터를 저장할 state
 
@@ -35,7 +37,8 @@ function Confirm() {
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
             direction = 'descending';
         }
-        const sortOrder = [...confirm].sort((a, b) => {
+
+        const sortOrder = [...formList].sort((a, b) => {
             if (a[key] < b[key]) {
                 return direction === 'ascending' ? -1 : 1;
             }
@@ -44,17 +47,16 @@ function Confirm() {
             }
             return 0;
         });
-        setConfirm(sortOrder);
-        setSortConfig({ key, direction });
+
+        setFormList(sortOrder);
+        setSortConfig({key, direction});
     };
 
-    // 서버에서 데이터를 가져오는 함수 (예시)
     const fetchData = async (params = {}) => {
         try {
             const queryString = new URLSearchParams(params).toString();
-            const response = await fetch('http://localhost:8383/confirm.do');
+            const response = await fetch(`http://localhost:8383/confirm?${queryString}`);
             const data = await response.json();
-            console.log('data는 뭘까:'+data);
             setConfirm(data);
         } catch (error) {
             console.error('데이터를 불러오는 중 오류가 발생했습니다:', error);
@@ -67,11 +69,51 @@ function Confirm() {
 
 
 // 모달창
-    const handleOpenClick = () => {
+    {/*    const handleOpenClick = () => {
         const item = confirm.find((item, index) => checkItem[index]);
         setSelectedItem(item || null);
         setOpenModal(true);
+    }*/
     }
+    const handleRowClick = async (confirmNo) => {
+        try {
+            const response = await fetch(`http://localhost:8383/confirm/${confirmNo}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setSelectedItem(data);
+            setOpenModal(true);
+        } catch (error) {
+            console.error('Error fetching confirm details:', error);
+            alert('상세 정보를 가져오는 데 실패했습니다.');
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8383/confirm');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                console.log('Fetched data:', data);
+                setFormList(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+// 모달창
+    const handleOpenClick = () => {
+        const item = formList[formList.length - 1];
+        setOpenModal(true);
+    }
+
     const handleCloseClick = () => {
         setOpenModal(false);
         setSelectedItem(null);
@@ -82,8 +124,17 @@ function Confirm() {
         setSearchParams(prev => ({...prev, [name]: value}));
     }
 
+    {/*    // const handleUpdateItem = useCallback((updatedItem) => {
+    //     setConfirm(prevConfirm =>
+    //         prevConfirm.map(confirm =>
+    //             confirm.confirmNo === updatedItem.confirmNo ? updatedItem : confirm
+    //         )
+    //     );
+    //     setOpenModal(false);
+    // }, []);*/
+    }
     const handleUpdateItem = useCallback((updatedItem) => {
-        setConfirm(prevConfirm =>
+        setFormList(prevConfirm =>
             prevConfirm.map(confirm =>
                 confirm.confirmNo === updatedItem.confirmNo ? updatedItem : confirm
             )
@@ -105,12 +156,16 @@ function Confirm() {
                     <div className="filter-row">
                         <label className="filter-label" htmlFor="customerName">고객명</label>
                         <input className="filter-input" type="text" id="customerName" name="customerName"
-                               value={searchParams.employeeName} onChange={handleInputChange} placeholder="고객명" required />
+
+                               value={searchParams.employeeName} onChange={handleInputChange} placeholder="고객명"
+                               required/>
                     </div>
                     <div className="filter-row">
                         <label className="filter-label" htmlFor="employeeName">담당자</label>
                         <input className="filter-input" type="text" id="employeeName" name="employeeName"
-                               value={searchParams.customerName} onChange={handleInputChange} placeholder="담당자" required />
+
+                               value={searchParams.customerName} onChange={handleInputChange} placeholder="담당자"
+                               required/>
                     </div>
                     <div className="filter-row">
                         <label className="filter-label" htmlFor="confirmRegDate">시작 일자</label>
@@ -118,7 +173,7 @@ function Confirm() {
                             <i className="bi bi-info-circle"></i>
                             <span className="tooltip">결재 요청일 기준</span>
                         </span>
-                        <input className="filter-input" type="date" id="confirmRegDate" required />
+                        <input className="filter-input" type="date" id="confirmRegDate" required/>
                     </div>
                     <div className="filter-row">
                         <label className="filter-label" htmlFor="confirmConfirmDate">종료 일자</label>
@@ -126,7 +181,7 @@ function Confirm() {
                             <i className="bi bi-info-circle"></i>
                             <span className="tooltip">결재 요청일 기준</span>
                         </span>
-                        <input className="filter-input" type="date" id="confirmConfirmDate" required />
+                        <input className="filter-input" type="date" id="confirmConfirmDate" required/>
                     </div>
                     <div className="filter-row">
                         <label className="filter-label" htmlFor="confirmStatus">결재 여부</label>
@@ -140,26 +195,25 @@ function Confirm() {
                     <button type="submit" className="filter-button">조회</button>
                 </div>
 
-                <button type="button" className="confirm-selected" onClick={handleOpenClick}>수정</button>
+                {/*<button type="button" className="confirm-selected" onClick={handleOpenClick}>수정</button>*/}
 
                 <table className="seacrh-table">
                     <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>고객명</th>
-                        <th>상품 종류
-                            <button className="sortBtn" onClick={() => sortData('productType')}>
-                                {sortConfig.key === 'productType' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                        <th>No.
+                            <button className="sortBtn" onClick={() => sortData('confirmNo')}>
+                                {sortConfig.key === 'confirmNo' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
                             </button>
                         </th>
-                        <th>상품명
-                            <button className="sortBtn" onClick={() => sortData('productName')}>
-                                {sortConfig.key === 'productName' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                        <th>주문 번호
+                            <button className="sortBtn" onClick={() => sortData('orderNo')}>
+                                {sortConfig.key === 'orderNo' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
                             </button>
                         </th>
+
                         <th>상품 수량
-                            <button className="sortBtn" onClick={() => sortData('productQty')}>
-                                {sortConfig.key === 'productQty' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
+                            <button className="sortBtn" onClick={() => sortData('orderQty')}>
+                                {sortConfig.key === 'orderQty' ? (sortConfig.direction === 'ascending' ? '▲' : '▼') : '-'}
                             </button>
                         </th>
                         <th>판매가(원)
@@ -183,20 +237,21 @@ function Confirm() {
                     </tr>
                     </thead>
                     <tbody>
-                    {confirm.length > 0 ? (
-                        confirm.map((item, index) => (
+                    {formList.length > 0 ? (
+                        formList.map((item, index) => (
                             <tr key={item.No || index}>
                                 <td>{item.No}</td>
                                 <td>{item.customerName}</td>
                                 <td>{item.productType}</td>
                                 <td>{item.productName}</td>
-                                <td>{item.productQty}</td>
+                                <td>{item.orderQty}</td>
                                 <td>{item.customPrice}</td>
                                 <td>{item.totalAmount}</td>
                                 <td>{item.delDate}</td>
                                 <td>{item.employeeName}</td>
                                 <td>{item.approver}</td>
                                 <td>{item.confirmStatus}</td>
+
                             </tr>
                         ))
                     ) : (

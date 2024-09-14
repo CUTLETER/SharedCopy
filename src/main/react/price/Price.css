@@ -48,6 +48,25 @@ body {
     font-size: 14px;
     box-sizing: border-box;
 }
+
+datalist {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+option {
+    padding: 10px;
+    cursor: pointer;
+}
+
+option:hover {
+    background-color: #5271ff;
+    color: white;
+}
 .button-container {
     display: flex;
     align-items: center; /* 세로(위아래) 가운데 정렬 */
@@ -163,7 +182,7 @@ h2 {
     gap: 15px;
 }
 
-input {
+input, select {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 2px;
@@ -381,4 +400,58 @@ tr:nth-child(0){
     width: 100%;
     height: 100%;
     align-items: center;
+}
+
+
+
+.autocomplete-container {
+    position: relative;
+    width: 300px;
+}
+
+.autocomplete-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.autocomplete-input:focus {
+    border-color: #5271ff;
+    box-shadow: 0 0 8px rgba(82, 113, 255, 0.3);
+}
+
+.autocomplete-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.autocomplete-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.autocomplete-item:hover {
+    background-color: #5271ff;
+    color: white;
+}
+
+.autocomplete-item.active {
+    background-color: #5271ff;
+    color: white;
 }

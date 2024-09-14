@@ -26,8 +26,6 @@ public class Price {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqPrice")
     private Long priceNo;
     private LocalDate registerDate;
-    private Long productNo;
-    private Long customerNo;
     private Double customPrice;
     private String currency;
     private Double discount;
@@ -37,9 +35,17 @@ public class Price {
     @Column(name = "activated", length = 1)
     private YesNo activated;
 
+    @ManyToOne
+    @JoinColumn(name = "product_no")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_no")
+    private Customer customer;
+
     public Price(
             LocalDate registerDate,
-            Long productNo, Long customerNo,
+//            Long productNo, Long customerNo,
             Double customPrice,
             String currency,
             Double discount,
@@ -48,8 +54,6 @@ public class Price {
             YesNo activated
     ) {
         this.registerDate = registerDate;
-        this.productNo = productNo;
-        this.customerNo = customerNo;
         this.customPrice = customPrice;
         this.currency = currency;
         this.discount = discount;

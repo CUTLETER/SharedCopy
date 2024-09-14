@@ -1,7 +1,11 @@
 package com.project.tobe.database.price;
 
+import com.project.tobe.entity.Customer;
 import com.project.tobe.entity.Price;
+import com.project.tobe.entity.Product;
+import com.project.tobe.repository.CustomerRepository;
 import com.project.tobe.repository.PriceRepository;
+import com.project.tobe.repository.ProductRepository;
 import com.project.tobe.util.constants.YesNo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,18 +13,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @SpringBootTest
 public class PriceTest {
     @Autowired
     private PriceRepository priceRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Test
     public void test1() {
+        Optional<Product> product1 = productRepository.findById(1001L);
+        Optional<Product> product2 = productRepository.findById(1003L);
+        Optional<Product> product3 = productRepository.findById(1005L);
+        Optional<Product> product4 = productRepository.findById(1001L);
+        Optional<Product> product5 = productRepository.findById(1002L);
+        Optional<Product> product6 = productRepository.findById(1004L);
+
+        Optional<Customer> customer1 = customerRepository.findById(2002L);
+        Optional<Customer> customer2 = customerRepository.findById(2003L);
+        Optional<Customer> customer3 = customerRepository.findById(2004L);
+
         Price price1 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1001L)
-                .customerNo(2001L)
+                .product(product1.get())
+                .customer(customer1.get())
                 .customPrice(150.75)
                 .currency("USD")
                 .discount(10.5)
@@ -31,8 +51,8 @@ public class PriceTest {
 
         Price price2 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1002L)
-                .customerNo(2L)
+                .product(product2.get())
+                .customer(customer2.get())
                 .customPrice(250.00)
                 .currency("EUR")
                 .discount(5.0)
@@ -43,8 +63,8 @@ public class PriceTest {
 
         Price price3 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1003L)
-                .customerNo(2003L)
+                .product(product3.get())
+                .customer(customer3.get())
                 .customPrice(175.50)
                 .currency("GBP")
                 .discount(7.5)
@@ -55,8 +75,8 @@ public class PriceTest {
 
         Price price4 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1004L)
-                .customerNo(2004L)
+                .product(product4.get())
+                .customer(customer1.get())
                 .customPrice(200.00)
                 .currency("JPY")
                 .discount(8.0)
@@ -67,8 +87,8 @@ public class PriceTest {
 
         Price price5 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1005L)
-                .customerNo(2005L)
+                .product(product5.get())
+                .customer(customer2.get())
                 .customPrice(220.00)
                 .currency("CNY")
                 .discount(6.0)
@@ -79,8 +99,8 @@ public class PriceTest {
 
         Price price6 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1006L)
-                .customerNo(2006L)
+                .product(product6.get())
+                .customer(customer1.get())
                 .customPrice(180.00)
                 .currency("KRW")
                 .discount(4.5)
@@ -91,8 +111,8 @@ public class PriceTest {
 
         Price price7 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1007L)
-                .customerNo(2007L)
+                .product(product1.get())
+                .customer(customer3.get())
                 .customPrice(300.00)
                 .currency("USD")
                 .discount(9.5)
@@ -103,8 +123,8 @@ public class PriceTest {
 
         Price price8 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1008L)
-                .customerNo(2008L)
+                .product(product2.get())
+                .customer(customer1.get())
                 .customPrice(130.00)
                 .currency("CAD")
                 .discount(3.0)
@@ -115,8 +135,8 @@ public class PriceTest {
 
         Price price9 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1009L)
-                .customerNo(2009L)
+                .product(product3.get())
+                .customer(customer1.get())
                 .customPrice(110.00)
                 .currency("AUD")
                 .discount(2.5)
@@ -127,8 +147,8 @@ public class PriceTest {
 
         Price price10 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1010L)
-                .customerNo(2010L)
+                .product(product4.get())
+                .customer(customer1.get())
                 .customPrice(500.00)
                 .currency("SGD")
                 .discount(15.0)
@@ -139,8 +159,8 @@ public class PriceTest {
 
         Price price11 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1011L)
-                .customerNo(2011L)
+                .product(product5.get())
+                .customer(customer2.get())
                 .customPrice(140.00)
                 .currency("HKD")
                 .discount(6.5)
@@ -151,8 +171,8 @@ public class PriceTest {
 
         Price price12 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1012L)
-                .customerNo(2012L)
+                .product(product6.get())
+                .customer(customer2.get())
                 .customPrice(160.00)
                 .currency("INR")
                 .discount(5.5)
@@ -163,8 +183,8 @@ public class PriceTest {
 
         Price price13 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1013L)
-                .customerNo(2013L)
+                .product(product1.get())
+                .customer(customer1.get())
                 .customPrice(210.00)
                 .currency("BRL")
                 .discount(7.0)
@@ -175,8 +195,8 @@ public class PriceTest {
 
         Price price14 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1014L)
-                .customerNo(2014L)
+                .product(product2.get())
+                .customer(customer3.get())
                 .customPrice(125.00)
                 .currency("ZAR")
                 .discount(3.5)
@@ -187,8 +207,8 @@ public class PriceTest {
 
         Price price15 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1015L)
-                .customerNo(2015L)
+                .product(product3.get())
+                .customer(customer3.get())
                 .customPrice(180.00)
                 .currency("MXN")
                 .discount(6.0)
@@ -199,8 +219,8 @@ public class PriceTest {
 
         Price price16 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1016L)
-                .customerNo(2016L)
+                .product(product4.get())
+                .customer(customer3.get())
                 .customPrice(270.00)
                 .currency("RUB")
                 .discount(4.0)
@@ -211,8 +231,8 @@ public class PriceTest {
 
         Price price17 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1017L)
-                .customerNo(2017L)
+                .product(product5.get())
+                .customer(customer1.get())
                 .customPrice(155.00)
                 .currency("SEK")
                 .discount(5.0)
@@ -223,8 +243,8 @@ public class PriceTest {
 
         Price price18 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1018L)
-                .customerNo(2018L)
+                .product(product6.get())
+                .customer(customer1.get())
                 .customPrice(240.00)
                 .currency("NOK")
                 .discount(4.5)
@@ -235,8 +255,8 @@ public class PriceTest {
 
         Price price19 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1019L)
-                .customerNo(2019L)
+                .product(product1.get())
+                .customer(customer1.get())
                 .customPrice(190.00)
                 .currency("CHF")
                 .discount(8.0)
@@ -247,8 +267,8 @@ public class PriceTest {
 
         Price price20 = Price.builder()
                 .registerDate(LocalDate.now())
-                .productNo(1020L)
-                .customerNo(2020L)
+                .product(product2.get())
+                .customer(customer1.get())
                 .customPrice(210.00)
                 .currency("NZD")
                 .discount(9.0)

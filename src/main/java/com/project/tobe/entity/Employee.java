@@ -7,14 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "employee")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @Builder
-@Entity
-@Table(name = "employee")
 public class Employee {
     @Id
     private String employeeId;
@@ -28,4 +28,5 @@ public class Employee {
     private Long salary;
     private String employeeManagerId;
     private String authorityGrade;
+    private String emplYn;
 }

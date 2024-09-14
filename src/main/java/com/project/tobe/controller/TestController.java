@@ -3,7 +3,7 @@ package com.project.tobe.controller;
 import com.project.tobe.entity.Product;
 import com.project.tobe.entity.TestDB;
 import com.project.tobe.repository.ProductRepository;
-import com.project.tobe.entity.Employee;
+import com.project.tobe.entity.Customer;
 import com.project.tobe.repository.EmployeeRepository;
 import com.project.tobe.repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;

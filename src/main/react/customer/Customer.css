@@ -9,7 +9,7 @@ body {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 3px;
-    background-color: #f9f9f9;
+   background: linear-gradient(0deg, rgb(246 246 246) 0%, rgba(255, 255, 255, 1) 100%);
     align-items: start; /* Align items at the start vertically */
     margin-bottom: 40px;
     margin-top: 30px;
@@ -32,6 +32,14 @@ body {
     align-items: center;
     gap: 5px; /* Reduced space between label and input */
 }
+
+.filter-item select {
+    width: 80%;
+    height: 30px;
+border: 1px solid #ccc;
+    border-radius: 4px;
+    }
+
 .filter-item label {
     width: 25%;
     font-weight: bold;
@@ -385,3 +393,28 @@ tr:nth-child(0){
     height: 100%;
     align-items: center;
 }
+
+
+
+/* 화면 애니메이션*/
+.fade_effect {
+    background: white;
+    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+    animation: fadein 0.3s ease-in;
+}
+/* 위에 fadein 옵션 조절하기 */
+@keyframes fadein { 
+    from {
+        opacity :0;
+    } to {
+        opacity: 1;
+    }
+}
+
+
+
+
+
+
+
+
