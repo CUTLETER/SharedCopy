@@ -17,7 +17,7 @@ create table product (
 create sequence seq_price start 1;
 create table price (
                        price_no bigint default nextval('seq_price'),
-                       register_date date default current_timestamp,
+                       register_date timestamp default current_timestamp,
                        product_no bigint not null,
                        customer_no bigint not null,
                        custom_price numeric(20) null,

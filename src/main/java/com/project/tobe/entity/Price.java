@@ -5,7 +5,9 @@ import lombok.*;
 import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "price")
@@ -25,7 +27,9 @@ public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqPrice")
     private Long priceNo;
-    private LocalDate registerDate;
+
+    @Column(name = "register_date", columnDefinition = "timestamp")
+    private LocalDateTime registerDate;
     private Double customPrice;
     private String currency;
     private Double discount;
@@ -44,7 +48,7 @@ public class Price {
     private Customer customer;
 
     public Price(
-            LocalDate registerDate,
+            LocalDateTime registerDate,
 //            Long productNo, Long customerNo,
             Double customPrice,
             String currency,

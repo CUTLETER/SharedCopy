@@ -7,11 +7,123 @@ body {
     padding: 0;
 }
 
+.filter-containers {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: linear-gradient(0deg, rgb(246 246 246) 0%, rgba(255, 255, 255, 1) 100%);
+    align-items: start; /* Align items at the start vertically */
+    margin-bottom: 40px;
+    margin-top: 30px;
+}
+
+.filter-container {
+    display: grid;
+    grid-template-columns: 3fr 0fr; /* Left side with filter items, right side with button */
+    margin-bottom: 30px;
+}
+
+.filter-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for filter items */
+    gap: 20px 7%;
+}
+
+
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Reduced space between label and input */
+}
+.filter-item label {
+    width: 25%;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.filter-item input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+.button-container {
+    display: flex;
+    align-items: center; /* 세로(위아래) 가운데 정렬 */
+    justify-content: flex-end; /* 가로 가운데 정렬 (필요 시) */
+}
+.search-btn {
+    padding: 10px 20px;
+    background-color: #004e90;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 3%;
+    text-align: center;
+    display: flex;
+    align-items: center; /* 세로(위아래) 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+}
+.search-btn .bi {
+    text-align: center;
+    display: block;
+}
+
+.reset-btn {
+    padding: 10px 20px;
+    background-color: #bbb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 3%;
+    text-align: center;
+    display: flex;
+    align-items: center; /* 세로(위아래) 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    margin-right: 5px;
+}
+
+.reset-btn:hover{
+    background-color: #ccc;
+}
+
+.reset-btn .bi {
+    text-align: center;
+    display: block;
+}
+
+
+.filter-item select {
+    width: 80%;
+    height: 34px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+
+.full-width {
+    grid-column: span 3; /* 전체 너비를 차지하는 아이템 */
+}
+.filter-item .full-label {
+    width: 7.2%;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
 /* styles.css */
 
 #add{
     float: right;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 
@@ -177,28 +289,15 @@ tr:nth-child(0){
 
 }
 
-
-.filter-container {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    background-color: #f4f4f4;
-    margin: auto;
-    background: linear-gradient(0deg, rgb(246 246 246) 0%, rgba(255, 255, 255, 1) 100%);
-        box-shadow: 0px 2px 20px 0px #fafafa;
-}
-
 .pageHeader {
     margin-bottom : 60px;
 }
 
 
-.pageHeader .bi {
+/* .pageHeader .bi {
     margin-right : 10px;
-}
+} */
+/* 
 
 .filter-item {
     display: flex;
@@ -210,7 +309,7 @@ tr:nth-child(0){
     margin-right: 8px;
     white-space: nowrap;
 
-}
+} */
 
 .filter-input, .filter-select {
     flex: 1;
@@ -233,14 +332,11 @@ tr:nth-child(0){
 }
 
 .filter-button {
-    grid-column-end  : 7;
-
-    margin-top: 20px;
-    padding: 8px 16px;
+    padding: 6px 12px;
     border: 1px solid #004e90;
     background-color: #004e90;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 3px;
     cursor: pointer;
 }
@@ -289,15 +385,11 @@ tr:nth-child(0){
     background-color: rgba(200, 230, 255, 0.366);
 }
 
-.main-container {
-    position: relative;
-}
-
 .delete-btn-main {
     width: 65px;
     height: 25px;
     position: absolute;
-    top: 170px;
+    top: -45px;
     border: 1px solid #ddd;
     background-color: #004e90;
     color: white;
@@ -343,31 +435,67 @@ tr:nth-child(0){
     align-items: center;
 }
 
-select {
-    width: 55px; /* 셀렉트 박스의 너비 설정 */
-    height: 25px;
-}
-/* 
-.filter-input-group {
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: 5px;
-}
-
-.filter-input-group select {
-    height: 25px;
-}
-
-.filter-input-wrapper {
+.button-container {
     display: flex;
     align-items: center;
-} */
+    justify-content: flex-end;
+}
 
 
 .product-register-btn:hover,
 .product-add-btn:hover,
 .delete-btn-main:hover,
-.delete-btn-modal:hover {
+.delete-btn-modal:hover,
+.search-btn:hover {
     background-color: #0056b3;
 }
+
+
+/* 페이지네이션 */
+
+.pagination {
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+/* .pagination_link {
+    transition: all 0.25s;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+} */
+
+
+
+.pagination_link_active {
+    background-color: #bbb;
+    color: #fefefe;
+}
+
+.pagination_link.disabled {
+    color: #ccc; /* 비활성화 시 색상 */
+    cursor: not-allowed; /* 비활성화 시 커서 스타일 */
+}
+
+
+.pagination_link {
+    /* transition: all 0.25s; */
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+    outline: none; /* 기본 테두리 제거 */
+    user-select: none; /* 텍스트 선택 방지 */
+}
+
+.pagination_link:focus {
+    outline: none; /* 포커스 시 테두리 제거 */
+    box-shadow: none; /* 박스 그림자 제거 */
+}
+
+.pagination_link:hover {
+    background-color: #ddd; /* 호버 시 배경색 변경 */
+}
+
+

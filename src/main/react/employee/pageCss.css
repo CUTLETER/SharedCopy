@@ -1,0 +1,34 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 버튼 사이 간격 */
+}
+
+.arrow {
+    padding: 8px 12px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: white; /* 기본 배경색 */
+    color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.arrow:hover {
+    background-color: #007bff; /* 호버 시 배경색 */
+    color: white; /* 호버 시 글자색 */
+}
+
+.arrow:disabled {
+    background-color: #f0f0f0; /* 비활성화 버튼 색상 */
+    color: #ccc; /* 비활성화 글자색 */
+    cursor: not-allowed;
+}
+
+.current-page {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #e9ecef; /* 현재 페이지 배경색 */
+    color: #333; /* 현재 페이지 글자색 */
+}

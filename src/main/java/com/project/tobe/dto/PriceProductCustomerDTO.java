@@ -2,7 +2,9 @@ package com.project.tobe.dto;
 
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +13,7 @@ import java.time.LocalDate;
 @ToString
 @Builder
 public class PriceProductCustomerDTO {
-    private LocalDate registerDate;
+    private LocalDateTime registerDate;
     private Long priceNo;
     private Long productNo;
     private String productName;

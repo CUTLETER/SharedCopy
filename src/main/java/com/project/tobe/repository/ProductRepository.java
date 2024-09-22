@@ -13,10 +13,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByProductYnEquals(Character productYn);
 
+    @Query("SELECT p FROM Product p ORDER BY p.productNo DESC")
+    List<Product> findAllByOrderByProductNoDesc();
+
     @Transactional
     @Modifying
     @Query("UPDATE Product p SET p.productYn = 'N' WHERE p.productNo IN :productNos")
     void updateProductYn(@Param("productNos") List<Long> productNos);
-
-
 }

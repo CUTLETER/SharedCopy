@@ -1,17 +1,25 @@
 package com.project.tobe.controller;
 
 
+import com.project.tobe.dto.*;
 import com.project.tobe.dto.EmployeeDTO;
-import com.project.tobe.dto.EmployeeSearchDTO;
-import com.project.tobe.dto.EmployeeDTO;
-import com.project.tobe.dto.EmployeeTestDTO;
 import com.project.tobe.entity.Employee;
+import com.project.tobe.security.EmployeeDetails;
 import com.project.tobe.service.EmployeeService;
+import com.project.tobe.util.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -30,24 +38,29 @@ public class EmployeeController {
 //        return e;
 //        }
 
-    @GetMapping("/employeeALL")
-    public List<EmployeeDTO> employeeALL() {
-      List<EmployeeDTO> emploList = employeeService.getAllList();
-      return employeeService.getAllList();
-    }
+  @GetMapping("/employeeALL")
+  public List<EmployeeDTO> employeeALL() {
+    List<EmployeeDTO> emploList = employeeService.getAllList();
+    return employeeService.getAllList();
+  }
+
+
+
 
   @PostMapping("/employeeSearch")
-  public List<EmployeeDTO> employeePick(@RequestBody EmployeeSearchDTO dto) {
-    System.out.println("검색 예제 컨트롤러");
-    System.out.println(dto);
-    return employeeService.getPickList(dto);
+  public PageVO<EmployeeDTO> employeePick(@RequestBody EmployeeDTO dto) {
+    Pageable pageable = PageRequest.of(dto.getPage() - 1, dto.getAmount());
+
+    Page<EmployeeDTO> page = employeeService.getPickList(dto, pageable);
+
+    System.out.println(new PageVO<>(page).toString());
+
+    return new PageVO<>(page);
   }
 
 
   @PostMapping("/employeeRegist")
   public void employeeRegistTest(@RequestBody List<EmployeeTestDTO> dto) {
-    System.out.println("등록 예제 컨트롤러");
-    System.out.println(dto);
     employeeService.employeeRegistTest(dto);
   }
 
@@ -58,19 +71,40 @@ public class EmployeeController {
   }
 
   @PostMapping("/employeeUpdate")
-  public void employeeUpdateTest(@RequestBody EmployeeTestDTO dto) {
-    System.out.println("등록 예제 컨트롤러");
-    System.out.println(dto);
-    employeeService.employeeUpdateTest(dto);
+  public void employeeUpdateMaster(@RequestBody EmployeeTestDTO dto) {
+    employeeService.employeeUpdateMaster(dto);
   }
 
   @PostMapping("/employeeDelete")
   public void employeeDeleteTest(@RequestBody List<String> employeeIds) {
-    System.out.println("등록 예제 컨트롤러");
-    System.out.println(employeeIds);
     employeeService.employeeDeleteTest(employeeIds);
   }
 
+  @PostMapping("/employeeDeletePick")
+  public void employeeDeletePick(@RequestBody String employeeId) {
+    System.out.println("컨");
+    employeeService.employeeDeletePick(employeeId);
+  }
 
 
+  @PostMapping("/employeePwChange")
+  public void employeePwChange(@RequestBody EmployeeDTO dto) {
+    employeeService.employeePwChange(dto);
+  }
+
+  @GetMapping("/user-info")
+  public ResponseEntity<?> employeeUserInfo(Authentication authentication) {
+    if (authentication == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+    }
+
+    EmployeeDetails user = (EmployeeDetails)authentication.getPrincipal(); //인증객체 안에 principal값을 얻으면 유저객체가 나옵니다.
+
+    // 사용자 이름과 권한을 반환
+    Map<String, Object> response = new HashMap<>();
+    response.put("userId", user.getUsername());
+    response.put("grade", user.getUserAuthorityGrade());
+
+    return ResponseEntity.ok(response);
+  }
 }

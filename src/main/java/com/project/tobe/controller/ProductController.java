@@ -3,10 +3,10 @@ package com.project.tobe.controller;
 import com.project.tobe.entity.Product;
 import com.project.tobe.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
@@ -17,7 +17,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public List<Product> getProducts() {
-        return productRepository.findAll();
+        return productRepository.findAllByOrderByProductNoDesc();
     }
 
     @PostMapping("/updateProductYn")
@@ -32,8 +32,11 @@ public class ProductController {
 
     @PostMapping("/updateProduct")
     public Product updateProduct(@RequestBody Product product) {
-        // ProductRepository의 save 메서드를 사용하여 제품을 업데이트합니다.
         return productRepository.save(product);
     }
 
+    @GetMapping("/getProduct")
+    public Product getProduct(@RequestParam Long productNo) {
+        return productRepository.findById(productNo).get();
+    }
 }

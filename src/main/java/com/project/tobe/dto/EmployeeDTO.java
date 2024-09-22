@@ -28,4 +28,12 @@ public class EmployeeDTO {
     private String employeeManagerId;
     private String authorityGrade;
     private String emplYn;
+
+    private String authorityName;
+
+    private int page;
+    private int amount;
+    public int getPageStart() {
+        return (page - 1) * amount;
+    }
 }

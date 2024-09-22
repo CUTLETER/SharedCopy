@@ -3,13 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.project.tobe.customer.CustomerMapper">
+<mapper namespace="com.project.tobe.mapper.CustomerMapper">
 
     <!-- 고객 목록 조회 쿼리 -->
-    <select id="getAllList" resultType="com.project.tobe.dto.CustomerDTO">
-        SELECT * FROM customer where activated='Y'
+    <!-- 모든 활성 고객 조회 -->
+    <select id="getAllList" resultType="CustomerDTO">
+        select * from customer where activated='Y' order by customer_name collate "ko_KR.utf8";
     </select>
-    <select id="getPickList" resultType="com.project.tobe.dto.CustomerDTO">
+
+    <!-- 필터에 따라 고객 조회 -->
+    <select id="getPickList" resultType="CustomerDTO">
         SELECT *
         FROM customer
         <where>
@@ -23,13 +26,13 @@
                 AND customer_addr LIKE CONCAT('%', #{customerAddr}, '%')
             </if>
             <if test="customerTel != '' and customerTel != null">
-                AND customer_tel LIKE CONCAT('%', #{customerTel}, '%')
+                AND REPLACE(customer_tel, '-', '') LIKE CONCAT('%', REPLACE(#{customerTel}, '-', ''), '%')
             </if>
             <if test="postNum != '' and postNum != null">
                 AND post_num LIKE CONCAT('%', #{postNum}, '%')
             </if>
             <if test="businessRegistrationNo != '' and businessRegistrationNo != null">
-                AND business_registration_no LIKE CONCAT('%', #{businessRegistrationNo}, '%')
+                AND REPLACE(business_registration_no, '-', '') LIKE CONCAT('%', REPLACE(#{businessRegistrationNo}, '-', ''), '%')
             </if>
             <if test="nation != '' and nation != null">
                 AND nation LIKE CONCAT('%', #{nation}, '%')
@@ -49,16 +52,13 @@
             <if test="activated != '' and activated != null">
                 AND activated LIKE CONCAT('%', #{activated}, '%')
             </if>
-
         </where>
     </select>
 
 
 
     <insert id="customerRegistTest" parameterType="java.util.List">
-
-        INSERT INTO customer (
-        customer_no,
+        INSERT INTO customer(
         customer_name,
         customer_addr,
         customer_tel,
@@ -72,15 +72,16 @@
         activated
         )
         VALUES
-        <foreach collection="list" item="com.project.tobe.dto.CustomerDTO" separator=",">
-            (#{customer.customerNo}, #{customer.customerName}, #{customer.customerAddr},
-            #{customer.customerTel}, #{customer.postNum}, #{customer.businessRegistrationNo},
-            #{customer.nation}, #{customer.dealType}, #{customer.picName},
-            #{customer.picEmail}, #{customer.picTel},'y')
+        <foreach collection="list" item="item" separator=",">
+            (#{item.customerName}, #{item.customerAddr}, #{item.customerTel}, #{item.postNum}, #{item.businessRegistrationNo}, #{item.nation}, #{item.dealType}, #{item.picName}, #{item.picEmail}, #{item.picTel}, #{item.activated})
         </foreach>
     </insert>
 
-    <update id="customerUpdateTest" parameterType="com.project.tobe.dto.CustomerDTO" >
+
+
+
+
+    <update id="customerUpdateTest" parameterType="CustomerDTO" >
         UPDATE customer
         SET
         customer_no = #{customerNo},
@@ -99,7 +100,7 @@
 
     <update id="customerDeleteTest" parameterType="java.util.List">
         UPDATE customer
-        SET activated = 'n'
+        SET activated = 'N'
         WHERE customer_no IN
         <foreach collection="list" item="customerNo" open="(" separator="," close=")">
             CAST(#{customerNo} AS bigint)

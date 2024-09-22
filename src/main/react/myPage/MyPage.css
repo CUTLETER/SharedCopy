@@ -3,103 +3,132 @@
 
 body {
   font-family: "Noto Sans KR", sans-serif;
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
-    .mypage-main {
-        display: flex;
-        justify-content: center;
-        margin: 30px;
-      }
+.mypage-main {
+  display: flex;
+  justify-content: center;
+  margin: 30px;
+}
 
-        .mypage-table {
-            width: 50%;
-            padding: 20px;
-            border-radius: 2px;
-            background-color: #ffffff;
-            margin-right: 30px;
-        }
+.mypage-table {
+  width: 50%;
+  padding: 20px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  margin-right: 30px;
+}
 
-        .header i {
-            margin-right: 10px;
-        }
+.header i {
+  margin-right: 10px;
+}
 
-        .mypage-chart {
+.mypage-chart {
 
-          width: 50%;
-          height: 300px;
-        }
+  width: 50%;
+  height: 300px;
+}
 
-        .mypage-table >  tr ,td , th {
-          border: 1px solid #ddd;
-        }
+.mypage-table>tr,
+td,
+th {
+  border: 1px solid #ddd;
+}
 
-        .mypage-table table {
-            font-size: 0.8em;
-            width: 100%;
-            border-collapse: collapse;
-        }
+.mypage-table table {
+  font-size: 0.8em;
+  width: 100%;
+  border-collapse: collapse;
+}
 
-        .mypage-table tr td:nth-child(1) {
-          text-align: center;
-          font-weight: bold;
-          background: rgb(241,241,241);
+.mypage-table tr td:nth-child(1) {
+  text-align: center;
+  font-weight: bold;
+  background: rgb(241, 241, 241);
 
-        }
+}
 
-        .mypage-table td {
-          text-align: center;
-            padding: 10px;
-            height: 30%;
-            vertical-align: middle;
-        }
+.mypage-table td {
+  text-align: center;
+  padding: 10px;
+  height: 30%;
+  vertical-align: middle;
+}
 
-        .mypage-table .form-actions {
-            text-align: center;
-            padding-top: 10px;
+.mypage-table .form-actions {
+  text-align: center;
+  padding-top: 10px;
+  display: flex;
+  gap: 3%;
+  flex-direction: row-reverse;
 
-        }
-
-        .mypage-table  select {
-          text-align: center;
-          width: 60%;
-            height: 25px;
-            border: 1px solid #ddd;
-
-        }
-        .mypage-table  #hireDate {
-          text-align: center;
-          width: 60%;
-            height: 25px;
-            border: 1px solid #ddd;
-
-        }
-        .mypage-table input {
-          text-align: center;
-          border: 1px solid #ddd;
-          width: 60%;
-        }
+}
 
 
-        .mypage-table .form-actions button {
-          padding: 6px 12px;
-          border: 1px solid #004e90;
-          background-color: #004e90;
-          color: white;
-          font-size: 14px;
-          border-radius: 3px;
-          cursor: pointer;
-        }
-        .mypage-table .form-actions .submit-btn {
-            background-color: #00477a;
-            color: white;
-        }
-        .mypage-table .form-actions .cancel-btn {
-            background-color: #00477a;
-            color: white;
+/* .form-actions{
+   display: flex;
+ gap: 5%;
+ flex-direction: row-reverse;
+ }*/
+.pw-btn {
+  padding: 6px 12px;
+  border: 1px solid #004e90;
+  background-color: #004e90;
+  color: white;
+  font-size: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.pw-btn:hover{
+  background-color: #0056b3;
+}
 
-        }
-        .submit-btn {
-            float: right;
-        }
+.mypage-table select {
+  text-align: center;
+  width: 60%;
+  height: 25px;
+  border: 1px solid #ddd;
+
+}
+
+.mypage-table #hireDate {
+  text-align: center;
+  width: 60%;
+  height: 25px;
+  border: 1px solid #ddd;
+
+}
+
+.mypage-table input {
+  text-align: center;
+  border: 1px solid #ddd;
+  width: 60%;
+}
+
+
+.mypage-table .form-actions button {
+  padding: 6px 12px;
+  border: 1px solid #004e90;
+  background-color: #004e90;
+  color: white;
+  font-size: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.mypage-table .form-actions .submit-btn {
+  background-color: #00477a;
+  color: white;
+}
+
+.mypage-table .form-actions .cancel-btn {
+  background-color: #00477a;
+  color: white;
+
+}
+
+.submit-btn {
+  float: right;
+}

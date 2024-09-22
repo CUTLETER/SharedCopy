@@ -1,0 +1,30 @@
+.pageNation {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.pageNation li {
+    margin: 0 5px;
+}
+
+.pageNation p {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.pageNation p.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pageNation p:hover {
+    background-color: #ddd;
+}

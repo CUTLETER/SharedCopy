@@ -134,11 +134,11 @@
 }
 
 
-.formTableList tr:nth-last-child(1) {
+/* .formTableList tr:nth-last-child(1) {
     background: rgb(241, 241, 241);
     background: linear-gradient(1deg, rgba(241, 241, 241, 1) 0%, rgba(255, 255, 255, 1) 100%);
 
-}
+} */
 
 
 .formTableList td {
@@ -221,6 +221,21 @@
     border-radius: 2px;
     font-weight: bold;
 }
+
+.btn-add1 button {
+    background-color: #bbb;
+    color: #fff;
+    /* background-color: #fff;
+    box-shadow: 0 3px 3px rgba(189, 189, 189, 0.16), 0 3px 6px rgba(131, 131, 131, 0.23); */
+    /* background: rgb(241,241,241); */
+    /* background: linear-gradient(1deg, rgba(241,241,241,1) 0%, rgba(255,255,255,1) 100%); */
+    border: 1px solid #ddd;
+    width: 90px;
+    height: 35px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+
 
 .btn-close button {
     background: linear-gradient(1deg, rgba(241, 241, 241, 1) 0%, rgba(255, 255, 255, 1) 100%);

@@ -75,6 +75,34 @@ body {
 .search-btn:hover {
     background-color: #003561;
 }
+
+/* 조회 입력값 초기화 버튼 */
+.reset-btn {
+    padding: 10px 20px;
+    background-color: #bbb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 3%;
+    text-align: center;
+    display: flex;
+    align-items: center; /* 세로(위아래) 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    margin-right: 5px;
+}
+
+.reset-btn:hover{
+    background-color: #ccc;
+}
+
+.reset-btn .bi {
+    text-align: center;
+    display: block;
+}
+
+
 /* styles.css */
 
 .btn-common {
@@ -378,11 +406,19 @@ tr:nth-child(0){
 }
 
 .delete-btn {
-    width: 65px;
+    /*width: 65px;
     height: 25px;
     position: absolute;
-    top: -35px;
+    top: -35px;*/
+    margin-top: 10px;
 
+}
+
+.delete-btn2 {
+    width: 65px;
+    position: absolute;
+    top: 90%;
+    left: 5%;
 }
 
 /*  sort */
@@ -397,3 +433,53 @@ tr:nth-child(0){
     padding: 0px;
     float : right;
 }
+
+
+/* 페이지네이션 */
+
+.pagination {
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+/* .pagination_link {
+    transition: all 0.25s;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+} */
+
+
+
+.pagination_link_active {
+    background-color: #bbb;
+    color: #fefefe;
+}
+
+.pagination_link.disabled {
+    color: #ccc; /* 비활성화 시 색상 */
+    cursor: not-allowed; /* 비활성화 시 커서 스타일 */
+}
+
+
+.pagination_link {
+/* transition: all 0.25s; */
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+    outline: none; /* 기본 테두리 제거 */
+    user-select: none; /* 텍스트 선택 방지 */
+}
+
+.pagination_link:focus {
+    outline: none; /* 포커스 시 테두리 제거 */
+    box-shadow: none; /* 박스 그림자 제거 */
+}
+
+.pagination_link:hover {
+    background-color: #ddd; /* 호버 시 배경색 변경 */
+}
+
+

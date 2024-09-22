@@ -48,19 +48,17 @@ const AddressInput = (props) => {
     setDetailedAddress(event.target.value);  // 입력한 상세 주소 업데이트
   };
 
-  // 주소 확인 버튼 클릭 시 실행되는 함수
   const handleConfirm = () => {
-    const fullAddress = `${address} ${detailedAddress}`; // 기본 주소와 상세 주소 합치기
-    console.log('확인된 주소:', fullAddress);
-
-    // 부모 컴포넌트로 전체 주소 전달
+    const fullAddress = `${address} ${detailedAddress}`;
     if (props.onAddressConfirm) {
-      props.onAddressConfirm(fullAddress);
+      props.onAddressConfirm({
+        fullAddress: fullAddress,
+        zonecode: zonecode
+      }); // 객체로 전달
     }
-
-    setIsOpen(false); // 모달 닫기
+    setIsOpen(false);
   };
-
+  
   return (
     <div className="address-input-container">
       <div className="address-input-header">주소 입력</div>
